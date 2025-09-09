@@ -1,0 +1,15 @@
+# Virtual envs
+.venv
+env/
+__pycache__/
+*.pyc
+
+# Local DB files (not needed in container)
+*.db
+
+# Logs
+*.log
+
+# OS/editor junk
+.DS_Store
+*.swp
