@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.config.config import TEST_PING
 
 app = FastAPI(title="my-web-app API")
 
@@ -13,4 +14,4 @@ app.add_middleware(
 
 @app.get("/ping")
 async def ping():
-    return {"message": "pingping!"}
+    return {"message": TEST_PING}

@@ -31,3 +31,13 @@ Build images:
 docker build -f Dockerfile-frontend -t my-frontend:latest .
 docker build -f Dockerfile-backend -t my-backend:latest .
 ```
+Create newtork:
+```
+docker network create myapp-network
+```
+Start backend and frontend:
+```
+docker run --name backend --network myapp-network -p  my-backend
+docker run --name frontend --network myapp-network -p 3000:80 my-frontend
+```
+Visit http://localhost:3000/ to verify.
