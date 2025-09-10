@@ -1,1 +1,1 @@
-TEST_PING = "pingping!"
+TEST_PING = "pingpingping!"
