@@ -10,7 +10,7 @@ function App() {
       setMessage(data.message);
     } catch (err) {
       console.error("Error:", err);
-      setMessage("Error connecting to backend");
+      setMessage("Error connecting to the backend");
     }
   };
 
