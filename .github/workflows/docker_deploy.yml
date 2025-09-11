@@ -33,7 +33,7 @@ jobs:
           - run: echo "💡 Backend running."
     
           - name: Run frontend
-            run: docker run -d --name frontend --network myapp-network -p 3000:80 my-frontend:latest
+            run: docker run -d --name frontend --network myapp-network -p 5173:80 my-frontend:latest
 
           - run: echo "💡 Frontend running."
     
@@ -46,6 +46,6 @@ jobs:
           - run: echo "💡 Backend verified."
     
           - name: Verify frontend
-            run: curl --fail http://localhost:3000
+            run: curl --fail http://localhost:5173
 
           - run: echo "💡 Frontend verified."
