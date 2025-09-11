@@ -1,5 +1,5 @@
-name: Docker deploy
-run-name: ${{ github.actor }} is running docker deploy at ${{ github.event.head_commit.timestamp }}
+name: Docker Deploy
+run-name: ${{ github.actor }} is running Docker Deploy at ${{ github.event.head_commit.timestamp }}
 on: push
 
 jobs:

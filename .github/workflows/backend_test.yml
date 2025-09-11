@@ -1,5 +1,5 @@
-name: Backend python tests
-run-name: ${{ github.actor }} is running backend python tests at ${{ github.event.head_commit.timestamp }}
+name: Backend Tests
+run-name: ${{ github.actor }} is running Backend Tests at ${{ github.event.head_commit.timestamp }}
 on:
   push:
     paths:

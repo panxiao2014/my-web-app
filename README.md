@@ -37,7 +37,7 @@ docker network create myapp-network
 ```
 Start backend and frontend:
 ```
-docker run --name backend --network myapp-network -p  my-backend
-docker run --name frontend --network myapp-network -p 3000:80 my-frontend
+docker run --rm --name backend --network myapp-network -p 8000:8000 my-backend
+docker run --rm --name frontend --network myapp-network -p 3000:80 my-frontend
 ```
 Visit http://localhost:3000/ to verify.
