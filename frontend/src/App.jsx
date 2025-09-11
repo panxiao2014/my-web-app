@@ -15,16 +15,18 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <button
-        onClick={handleClick}
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
-      >
-        Click me
-      </button>
-      {message && (
-        <p className="mt-4 text-xl font-bold text-gray-800">{message}</p>
-      )}
+    <div className="min-h-screen p-4">
+      <div className="flex items-center gap-4">
+        <button
+          onClick={handleClick}
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-200"
+        >
+          Click me
+        </button>
+        <span className="text-xl font-bold text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700">
+          {message}
+        </span>
+      </div>
     </div>
   );
 }
