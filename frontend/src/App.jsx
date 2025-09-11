@@ -23,9 +23,11 @@ function App() {
         >
           Click me
         </button>
-        <span className="text-xl font-bold text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700">
-          {message}
-        </span>
+        {message !== "" && (
+          <span className="text-xl font-bold text-gray-800 dark:text-gray-200">
+            {message}
+          </span>
+        )}
       </div>
     </div>
   );
