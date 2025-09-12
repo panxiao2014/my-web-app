@@ -1,0 +1,35 @@
+---
+globs: *.py
+description: Always define Python functions with type hints for all parameters and return values
+---
+# Python Type Hinting Rule
+
+- Always annotate every function parameter and the return value.
+- Prefer precise standard types from `typing` and built-ins (e.g., `list[int]`, `dict[str, Any]`, `Literal`, `TypedDict`, `Protocol`).
+- Avoid `Any` unless absolutely necessary; consider `Unknown`-like patterns using `Protocol` or generics.
+- Use explicit `-> None` when a function returns nothing.
+- Annotate async functions and lambdas used as callbacks where possible.
+- Keep annotations up-to-date when code changes; do not leave stale types.
+
+Examples
+
+```python
+from typing import Any, Iterable, Mapping, Optional
+
+def load_user(user_id: int) -> dict[str, Any]:
+    ...
+
+def format_names(names: Iterable[str], upper: bool = False) -> list[str]:
+    ...
+
+def merge_configs(base: Mapping[str, Any], override: Mapping[str, Any]) -> dict[str, Any]:
+    ...
+
+def log_message(message: str) -> None:
+    ...
+```
+
+Enforcement Guidance
+
+- New or edited functions must include full annotations before completion.
+- When adding third-party APIs lacking types, add local stubs or typed wrappers.

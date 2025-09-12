@@ -5,6 +5,7 @@ from app.main import app
 from app.config.config import TEST_PING
 
 
+@pytest.mark.fastapi
 def test_ping_returns_test_ping_string():
     client = TestClient(app)
     response = client.get("/ping")

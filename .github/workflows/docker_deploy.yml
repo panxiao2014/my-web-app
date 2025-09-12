@@ -13,39 +13,39 @@ jobs:
           - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
     
           - name: Build backend image
-            run: docker build -f Dockerfile-backend -t my-backend:latest .
-
-          - run: echo "💡 Backend image built."
+            run: |
+                docker build -f Dockerfile-backend -t my-backend:latest .
+                echo "💡 Backend image built."
     
           - name: Build frontend image
-            run: docker build -f Dockerfile-frontend -t my-frontend:latest .
-
-          - run: echo "💡 Frontend image built."
+            run: |
+                docker build -f Dockerfile-frontend -t my-frontend:latest .
+                echo "💡 Frontend image built."
     
           - name: Create Docker network
-            run: docker network create myapp-network
+            run: |
+                docker network create myapp-network
+                echo "💡 Docker network created."
 
-          - run: echo "💡 Docker network created."
-    
           - name: Run backend
-            run: docker run -d --name backend --network myapp-network -p 8000:8000 my-backend:latest
-
-          - run: echo "💡 Backend running."
+            run: |
+                docker run -d --name backend --network myapp-network -p 8000:8000 my-backend:latest
+                echo "💡 Backend running." 
     
           - name: Run frontend
-            run: docker run -d --name frontend --network myapp-network -p 5173:80 my-frontend:latest
-
-          - run: echo "💡 Frontend running."
+            run: |
+                docker run -d --name frontend --network myapp-network -p 5173:80 my-frontend:latest
+                echo "💡 Frontend running."
     
           - name: Wait for backend to start
             run: sleep 5
     
           - name: Verify backend
-            run: curl --fail http://localhost:8000/ping
-
-          - run: echo "💡 Backend verified."
+            run: |
+                curl --fail http://localhost:8000/ping
+                echo "💡 Backend verified."
     
           - name: Verify frontend
-            run: curl --fail http://localhost:5173
-
-          - run: echo "💡 Frontend verified."
+            run: | 
+                pytest -m e2e
+                echo "💡 Frontend verified."

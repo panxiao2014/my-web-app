@@ -41,9 +41,9 @@ jobs:
           pip install -r requirements.txt
           echo "💡 The dependencies are installed."
 
-      - name: Run tests
+      - name: Run backend tests
         run: |
-            pytest -v
+            pytest  -m fastapi
             echo "💡 The tests are finished."
 
 
