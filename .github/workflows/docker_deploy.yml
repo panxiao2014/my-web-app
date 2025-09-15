@@ -36,16 +36,19 @@ jobs:
     
           - name: Create Docker network
             run: |
+                set -e
                 docker network create myapp-network
                 echo "💡 Docker network created."
 
           - name: Run backend
             run: |
+                set -e
                 docker run -d --name backend --network myapp-network -p 8000:8000 my-backend:latest
                 echo "💡 Backend running." 
     
           - name: Run frontend
             run: |
+                set -e
                 docker run -d --name frontend --network myapp-network -p 5173:80 my-frontend:latest
                 echo "💡 Frontend running."
     
