@@ -3,8 +3,8 @@ import { useAddUser, useRandomUser } from "./hooks/userHook";
 
 function App() {
   const { message, error, fetchPing } = usePing();
-  const { userForm, updateField, addUser } = useAddUser();
-  const { randomUser, fetchRandomUser } = useRandomUser();
+  const { userForm, updateField, addUser, addUserError } = useAddUser();
+  const { randomUser, fetchRandomUser, randomUserError } = useRandomUser();
 
   function handleAddUser(e) {
     e.preventDefault();
@@ -77,6 +77,11 @@ function App() {
               >
                 Add User
               </button>
+              {addUserError && (
+                <div className="mt-2 text-red-600 text-sm">
+                  Error: {addUserError.message}
+                </div>
+              )}
             </div>
           </form>
         </div>
@@ -92,7 +97,11 @@ function App() {
             </button>
           </div>
           <div className="rounded-md border p-3 text-sm text-gray-800 dark:text-gray-100 min-h-[64px]">
-            {randomUser ? (
+            {randomUserError ? (
+              <div className="text-red-600">
+                Error: {randomUserError.message}
+              </div>
+            ) : randomUser ? (
               <div>
                 <div><span className="font-medium">Name:</span> {randomUser.name}</div>
                 <div><span className="font-medium">Gender:</span> {randomUser.gender}</div>

@@ -3,7 +3,7 @@ import { addUserApi, getRandomUserApi } from "../services/api";
 
 export function useAddUser() {
   const [userForm, setUserForm] = useState({ name: "", gender: "Male", age: "" });
-  const [error, setError] = useState(null);
+  const [addUserError, setError] = useState(null);
 
   const updateField = useCallback((field, value) => {
     setUserForm((prev) => ({ ...prev, [field]: value }));
@@ -22,12 +22,12 @@ export function useAddUser() {
     }
   }, [userForm]);
 
-  return { userForm, error, updateField, addUser };
+  return { userForm, addUserError, updateField, addUser };
 }
 
 export function useRandomUser() {
   const [randomUser, setRandomUser] = useState(null);
-  const [error, setError] = useState(null);
+  const [randomUserError, setError] = useState(null);
 
   const fetchRandomUser = useCallback(async () => {
     setError(null);
@@ -40,7 +40,7 @@ export function useRandomUser() {
     }
   }, []);
 
-  return { randomUser, error, fetchRandomUser };
+  return { randomUser, randomUserError, fetchRandomUser };
 }
 
 
