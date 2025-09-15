@@ -9,11 +9,17 @@ from sqlalchemy.orm import sessionmaker
 from app.users.userdb_requets import router as userdb_router
 
 def _read_postgres_password() -> str:
+    # First try to get from environment variable (for production/CI)
+    password = os.getenv("POSTGRES_PASSWORD")
+    if password:
+        return password
+    
+    # Fallback to file for local development
     tokens_path = Path(__file__).resolve().parent.parent / "tokens" / "postgresql.txt"
     try:
         return tokens_path.read_text(encoding="utf-8").strip()
     except FileNotFoundError:
-        raise RuntimeError(f"PostgreSQL password file not found at: {tokens_path}")
+        raise RuntimeError(f"PostgreSQL password not found in environment variable POSTGRES_PASSWORD or file at: {tokens_path}")
 
 
 @asynccontextmanager
