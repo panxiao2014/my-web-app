@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { getPing } from "../services/api";
+import { getPingApi } from "../services/api";
 
 export function usePing() {
   const [message, setMessage] = useState("");
@@ -8,7 +8,7 @@ export function usePing() {
   const fetchPing = useCallback(async () => {
     setError(null);
     try {
-      const data = await getPing();
+      const data = await getPingApi();
       setMessage(data.message ?? "");
     } catch (e) {
       setError(e);
