@@ -36,24 +36,34 @@ jobs:
     
           - name: Create Docker network
             run: |
-                set -e
                 docker network create myapp-network
                 echo "💡 Docker network created."
 
           - name: Run backend
             run: |
-                set -e
                 docker run -d --name backend --network myapp-network -p 8000:8000 my-backend:latest
-                echo "💡 Backend running." 
+                sleep 5
+                status=$(docker inspect -f '{{.State.Status}}' backend)
+                if [ "$status" != "running" ]; then
+                  echo "❌ Backend container is not running. Printing logs:"
+                  docker logs backend
+                  exit 1
+                else
+                  echo "💡 Backend running."
+                fi
     
           - name: Run frontend
             run: |
-                set -e
                 docker run -d --name frontend --network myapp-network -p 5173:80 my-frontend:latest
-                echo "💡 Frontend running."
-    
-          - name: Wait for backend to start
-            run: sleep 5
+                sleep 5
+                status=$(docker inspect -f '{{.State.Status}}' frontend)
+                if [ "$status" != "running" ]; then
+                  echo "❌ Frontend container is not running. Printing logs:"
+                  docker logs frontend
+                  exit 1
+                else
+                  echo "💡 Frontendackend running."
+                fi
     
           - name: Verify backend
             run: |
