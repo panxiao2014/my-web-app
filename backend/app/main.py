@@ -25,7 +25,7 @@ def _read_postgres_password() -> str:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     password = _read_postgres_password()
-    database_url = f"postgresql+psycopg2://postgre:{password}@localhost:5432/postgres"
+    database_url = f"postgresql+psycopg2://postgres:{password}@localhost:5432/userdb"
     engine = create_engine(database_url, pool_pre_ping=True)
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
