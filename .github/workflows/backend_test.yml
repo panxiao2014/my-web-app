@@ -9,6 +9,22 @@ jobs:
   test-backend:
     name: Test backend job
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: userdb
+        options: >-
+          --health-cmd="pg_isready -U postgres -d userdb"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     defaults:
       run:
         working-directory: backend
@@ -40,6 +56,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           echo "💡 The dependencies are installed."
+
+      - name: Seed database with test users
+        run: |
+            # Wait for backend to be fully ready
+            sleep 10
+            # Run the database seeding script
+            cd backend
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} python -m app.users.seed_database
+            echo "💡 Database seeded with test users (Alice and Bob)."
 
       - name: Run backend tests
         run: |
