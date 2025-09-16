@@ -9,6 +9,11 @@ cd ../backend
 pip install -r requirements.txt
 ```
 
+# Update database schema:
+```
+sqlacodegen postgresql://<username>:<password>@localhost:5432/userdb --outfile backend/app/users/models.py
+```
+
 # How to run
 
 Frontend:
