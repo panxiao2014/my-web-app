@@ -4,34 +4,18 @@ Database seeding script for testing purposes.
 This script adds test users to the database to ensure tests have data to work with.
 """
 
-import os
 import sys
-from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.users.models import Base, Users
-
-
-def _read_postgres_password() -> str:
-    """Read PostgreSQL password from environment variable or file."""
-    # First try to get from environment variable (for production/CI)
-    password = os.getenv("POSTGRES_PASSWORD")
-    if password:
-        return password
-    
-    # Fallback to file for local development
-    tokens_path = Path(__file__).resolve().parent / "tokens" / "postgresql.txt"
-    try:
-        return tokens_path.read_text(encoding="utf-8").strip()
-    except FileNotFoundError:
-        raise RuntimeError(f"PostgreSQL password not found in environment variable POSTGRES_PASSWORD or file at: {tokens_path}")
+from .models import Base, Users
+from .utils import read_postgres_password
 
 
 def seed_database():
     """Seed the database with test users."""
     try:
         # Get database connection
-        password = _read_postgres_password()
+        password = read_postgres_password()
         database_url = f"postgresql+psycopg2://postgres:{password}@localhost:5432/userdb"
         
         # Create engine and session

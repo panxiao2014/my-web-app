@@ -1,5 +1,3 @@
-import os
-from pathlib import Path
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,24 +5,12 @@ from app.config.config import TEST_PING
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.users.userdb_requets import router as userdb_router
-
-def _read_postgres_password() -> str:
-    # First try to get from environment variable (for production/CI)
-    password = os.getenv("POSTGRES_PASSWORD")
-    if password:
-        return password
-    
-    # Fallback to file for local development
-    tokens_path = Path(__file__).resolve().parent.parent / "tokens" / "postgresql.txt"
-    try:
-        return tokens_path.read_text(encoding="utf-8").strip()
-    except FileNotFoundError:
-        raise RuntimeError(f"PostgreSQL password not found in environment variable POSTGRES_PASSWORD or file at: {tokens_path}")
+from app.users.utils import read_postgres_password
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    password = _read_postgres_password()
+    password = read_postgres_password()
     database_url = f"postgresql+psycopg2://postgres:{password}@localhost:5432/userdb"
     engine = create_engine(database_url, pool_pre_ping=True)
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

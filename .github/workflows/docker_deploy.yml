@@ -74,7 +74,7 @@ jobs:
                 sleep 10
                 # Run the database seeding script
                 cd backend
-                python seed_database.py
+                python -m app.users.seed_database
                 echo "💡 Database seeded with test users (Alice and Bob)."
     
           - name: Run frontend
