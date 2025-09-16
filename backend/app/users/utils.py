@@ -60,7 +60,10 @@ def init_database_session(app: FastAPI):
             conn.execute(text("SELECT 1"))
         SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     except Exception as exc:
-        raise RuntimeError(f"Failed to initialize database session to host '{db_host}': {exc}") from exc
+        message = "Failed to initialize database session to host '{host}': {err}".format(
+            host=db_host, err=str(exc)
+        )
+        raise RuntimeError(message) from exc
 
     app.state.db_engine = engine
     app.state.db_session_factory = SessionLocal
