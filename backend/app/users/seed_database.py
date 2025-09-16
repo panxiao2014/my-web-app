@@ -7,7 +7,7 @@ This script adds test users to the database to ensure tests have data to work wi
 import os
 import sys
 from pathlib import Path
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import sessionmaker
 from .models import Base, Users
 from .utils import read_postgres_password
@@ -24,8 +24,21 @@ def seed_database():
         engine = create_engine(database_url, pool_pre_ping=True)
         SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
         
-        # Create tables if they don't exist
-        Base.metadata.create_all(bind=engine)
+        # Ensure the users table exists (supports custom __tablename__ changes)
+        inspector = inspect(engine)
+        users_table_name = Users.__tablename__
+        if not inspector.has_table(users_table_name):
+            # Create the table using raw SQL with IF NOT EXISTS and anonymous constraints
+            create_sql = f"""
+            CREATE TABLE IF NOT EXISTS {users_table_name} (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(40) NOT NULL UNIQUE,
+                gender VARCHAR(6) NOT NULL CHECK (gender IN ('Male','Female')),
+                age INTEGER NOT NULL CHECK (age >= 0 AND age <= 100)
+            )
+            """
+            with engine.begin() as conn:
+                conn.execute(text(create_sql))
         
         # Create session
         db = SessionLocal()
