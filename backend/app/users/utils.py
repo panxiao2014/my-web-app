@@ -42,11 +42,6 @@ def read_postgres_password() -> str:
         raise RuntimeError(f"PostgreSQL password not found in environment variable POSTGRES_PASSWORD or file at: {tokens_path}")
 
 
-def get_db_host() -> str:
-    """Return database host from env or default to localhost."""
-    return os.getenv("POSTGRES_HOST", "localhost")
-
-
 def init_database_session(app: FastAPI):
     """
     Initialize database session for the application.
