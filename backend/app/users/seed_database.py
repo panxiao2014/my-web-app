@@ -4,7 +4,9 @@ Database seeding script for testing purposes.
 This script adds test users to the database to ensure tests have data to work with.
 """
 
+import os
 import sys
+from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from .models import Base, Users
@@ -47,8 +49,18 @@ def seed_database():
             
             # Commit changes
             db.commit()
+
+            # Verify the seeded users can be retrieved
+            retrieved = db.query(Users).filter(Users.name.in_([u.name for u in test_users])).all()
+            retrieved_names = {u.name for u in retrieved}
+            expected_names = {u.name for u in test_users}
+            if retrieved_names != expected_names:
+                print("Error: Seed verification failed. Expected users not found in database.")
+                print(f"Expected: {sorted(expected_names)}, Retrieved: {sorted(retrieved_names)}")
+                sys.exit(1)
+            
             print(f"Successfully seeded database with {len(test_users)} test users:")
-            for user in test_users:
+            for user in retrieved:
                 print(f"  - {user.name} ({user.gender}, age {user.age})")
                 
         except Exception as e:
