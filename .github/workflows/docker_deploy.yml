@@ -67,6 +67,15 @@ jobs:
                 else
                   echo "💡 Backend running."
                 fi
+
+          - name: Seed database with test users
+            run: |
+                # Wait for backend to be fully ready
+                sleep 10
+                # Run the database seeding script
+                cd backend
+                python seed_database.py
+                echo "💡 Database seeded with test users (Alice and Bob)."
     
           - name: Run frontend
             run: |
@@ -78,7 +87,7 @@ jobs:
                   docker logs frontend
                   exit 1
                 else
-                  echo "💡 Frontendackend running."
+                  echo "💡 Frontend running."
                 fi
     
           - name: Verify backend

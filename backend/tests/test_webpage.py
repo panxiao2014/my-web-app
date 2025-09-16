@@ -33,3 +33,32 @@ def test_click_button_displays_test_ping(page: Page):
     assert abs(button_center_y - resp_center_y) < 5, "TEST_PING text is not aligned vertically with the button"
 
 
+@pytest.mark.e2e
+def test_click_show_me_a_user_button_displays_user_info(page: Page):
+    # Open the frontend app
+    page.goto("http://localhost:5173/")
+
+    # Click the button labeled "Show me a user"
+    page.get_by_role("button", name="Show me a user").click()
+
+    # Wait for the user information to be displayed in the specific user display area
+    # Use the new data-testid for more reliable targeting
+    user_display_area = page.get_by_test_id("user-display-content")
+    expect(user_display_area).to_be_visible()
+    
+    # Verify that the user information is displayed in the correct container
+    # Check for the specific user data labels within the user display area
+    expect(user_display_area.get_by_text("Name:")).to_be_visible()
+    expect(user_display_area.get_by_text("Gender:")).to_be_visible()
+    expect(user_display_area.get_by_text("Age:")).to_be_visible()
+
+    # Verify that the user information is displayed in the correct format
+    # The text should be in the format: "Name: [name]", "Gender: [gender]", "Age: [age]"
+    user_info_container = user_display_area.locator("div:has-text('Name:')").first
+    expect(user_info_container).to_be_visible()
+    
+    # Verify that the "No user selected yet." text is no longer visible
+    expect(page.get_by_text("No user selected yet.")).not_to_be_visible()
+
+
+

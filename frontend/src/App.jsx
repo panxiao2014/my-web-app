@@ -31,7 +31,7 @@ function App() {
       </div>
 
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="p-4 border rounded-lg shadow-sm bg-white/60 dark:bg-gray-800/40">
+        <div id="add-user-section" className="p-4 border rounded-lg shadow-sm bg-white/60 dark:bg-gray-800/40" data-testid="add-user-form">
           <h2 className="text-lg font-semibold mb-4">Add a user</h2>
           <form onSubmit={handleAddUser} className="space-y-4">
             <div>
@@ -86,8 +86,8 @@ function App() {
           </form>
         </div>
 
-        <div className="p-4 border rounded-lg shadow-sm bg-white/60 dark:bg-gray-800/40">
-          <h2 className="text-lg font-semibold mb-4"></h2>
+        <div id="display-user-section" className="p-4 border rounded-lg shadow-sm bg-white/60 dark:bg-gray-800/40" data-testid="display-user-area">
+          <h2 className="text-lg font-semibold mb-4">Random User</h2>
           <div className="flex items-center gap-4 mb-4">
             <button
               onClick={fetchRandomUser}
@@ -96,7 +96,7 @@ function App() {
               Show me a user
             </button>
           </div>
-          <div className="rounded-md border p-3 text-sm text-gray-800 dark:text-gray-100 min-h-[64px]">
+          <div id="user-display-content" className="rounded-md border p-3 text-sm text-gray-800 dark:text-gray-100 min-h-[64px]" data-testid="user-display-content">
             {randomUserError ? (
               <div className="text-red-600">
                 Error: {randomUserError.message}
