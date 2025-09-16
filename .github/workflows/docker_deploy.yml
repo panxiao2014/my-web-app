@@ -17,7 +17,7 @@ jobs:
               POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
               POSTGRES_DB: userdb
             options: >-
-              --health-cmd="pg_isready -U testuser -d userdb"
+              --health-cmd="pg_isready -U postgres -d userdb"
               --health-interval=10s
               --health-timeout=5s
               --health-retries=5
@@ -74,7 +74,7 @@ jobs:
                 sleep 10
                 # Run the database seeding script
                 cd backend
-                python -m app.users.seed_database
+                POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} python -m app.users.seed_database
                 echo "💡 Database seeded with test users (Alice and Bob)."
     
           - name: Run frontend
