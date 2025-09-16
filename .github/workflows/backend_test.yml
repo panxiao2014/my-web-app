@@ -58,10 +58,24 @@ jobs:
           pip install -r requirements.txt
           echo "💡 The dependencies are installed."
 
+      - name: Create database tables (users)
+        run: |
+            # Wait for Postgres service to be ready
+            sleep 10
+            # Create tables using SQLAlchemy Base.metadata
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} python - <<'PY'
+from app.users.utils import read_postgres_password
+from app.users.models import Base
+from sqlalchemy import create_engine
+
+password = read_postgres_password()
+engine = create_engine(f"postgresql+psycopg2://postgres:{password}@localhost:5432/userdb", pool_pre_ping=True)
+Base.metadata.create_all(bind=engine)
+print("💡 Database tables created.")
+PY
+
       - name: Seed database with test users
         run: |
-            # Wait for backend to be fully ready
-            sleep 10
             # Run the database seeding script
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} python -m app.users.seed_database
             echo "💡 Database seeded with test users (Alice and Bob)."
