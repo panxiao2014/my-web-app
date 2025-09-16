@@ -60,15 +60,15 @@ jobs:
 
       - name: Seed database with test users
         run: |
-            # Wait for backend to be fully ready
-            sleep 10
             # Run the database seeding script
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} python -m app.users.seed_database
             echo "💡 Database seeded with test users (Alice and Bob)."
 
       - name: Run backend tests
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: |
-            pytest  -m fastapi
+            pytest -m fastapi
             echo "💡 The tests are finished."
 
 
