@@ -59,18 +59,13 @@ jobs:
             run: |
                 # Get the host IP that containers can reach (usually the Docker bridge gateway)
                 HOST_IP=$(ip route | grep default | awk '{print $3}')
-                echo "🔍 Using host IP: $HOST_IP for postgres mapping"
-                echo "🔍 Testing postgres connectivity from host:"
-                nc -zv $HOST_IP 5432 || echo "⚠️ Cannot connect to postgres on $HOST_IP:5432"
-                echo "🔍 Testing postgres connectivity from localhost:"
-                nc -zv localhost 5432 || echo "⚠️ Cannot connect to postgres on localhost:5432"
                 docker run -d --name backend \
                   --network myapp-network \
                   -p 8000:8000 \
                   -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
                   -e GITHUB_ACTIONS=$GITHUB_ACTIONS \
                   --add-host=postgres:$HOST_IP my-backend:latest
-                sleep 30
+                sleep 600
                 echo "🔍 Backend container status:"
                 docker ps -a --filter name=backend
                 echo "🔍 Backend container logs:"
