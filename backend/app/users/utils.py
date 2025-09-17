@@ -17,9 +17,11 @@ def get_db_host() -> str:
         # In GitHub Actions, check if we're running inside a Docker container
         # by checking for the /.dockerenv file
         if os.path.exists("/.dockerenv"):
+            print("🐳 Running in Docker container, using 'postgres' hostname")
             return "postgres"  # Use mapped hostname for Docker containers
         else:
             # We're running directly on the GitHub runner, not in a container
+            print("🖥️ Running directly on GitHub runner, using 'localhost'")
             return "localhost"  # PostgreSQL service is accessible via localhost
     
     # Check if we're running in Docker (local development)
