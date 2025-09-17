@@ -14,9 +14,17 @@ from sqlalchemy.orm import sessionmaker
 def get_db_host() -> str:
     # Check if we're running in GitHub Actions
     if os.getenv("GITHUB_ACTIONS"):
-        return "postgres"  # GitHub Actions service name
+        # In GitHub Actions, check if we're running inside a Docker container
+        # by looking for the /.dockerenv file or checking if we can resolve host.docker.internal
+        try:
+            # If we can resolve host.docker.internal, we're likely in a container
+            socket.gethostbyname("host.docker.internal")
+            return "postgres"  # Use mapped hostname for Docker containers
+        except socket.error:
+            # We're running directly on the GitHub runner, not in a container
+            return "localhost"  # PostgreSQL service is accessible via localhost
     
-    # Check if we're running in Docker
+    # Check if we're running in Docker (local development)
     try:
         socket.gethostbyname("host.docker.internal")
         return "host.docker.internal"
