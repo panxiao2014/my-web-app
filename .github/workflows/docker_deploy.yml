@@ -57,7 +57,7 @@ jobs:
 
           - name: Run backend
             run: |
-                docker run -d --name backend --network myapp-network -p 8000:8000 -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} my-backend:latest
+                docker run -d --name backend --network myapp-network -p 8000:8000 -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} --add-host=postgres:host-gateway my-backend:latest
                 sleep 5
                 status=$(docker inspect -f '{{.State.Status}}' backend)
                 if [ "$status" != "running" ]; then

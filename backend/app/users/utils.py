@@ -12,6 +12,11 @@ from sqlalchemy.orm import sessionmaker
 
 
 def get_db_host() -> str:
+    # Check if we're running in GitHub Actions (CI environment)
+    if os.getenv("GITHUB_ACTIONS"):
+        return "postgres"  # GitHub Actions service name
+    
+    # Check if we're running in Docker
     try:
         socket.gethostbyname("host.docker.internal")
         return "host.docker.internal"
