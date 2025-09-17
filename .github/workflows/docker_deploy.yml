@@ -7,21 +7,6 @@ jobs:
         name: Docker verify job
         runs-on: ubuntu-latest
 
-        services:
-          postgres:
-            image: postgres:17
-            ports:
-              - 5432:5432
-            env:
-              POSTGRES_USER: postgres
-              POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-              POSTGRES_DB: userdb
-            options: >-
-              --health-cmd="pg_isready -U postgres -d userdb"
-              --health-interval=10s
-              --health-timeout=5s
-              --health-retries=5
-
         steps:
           - name: Checkout repository
             uses: actions/checkout@v5
@@ -55,16 +40,26 @@ jobs:
                 docker network create myapp-network
                 echo "💡 Docker network created."
 
+          - name: Run Postgres
+            run: |
+              docker run -d --name postgres \
+                --network myapp-network \
+                -e POSTGRES_USER=postgres \
+                -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
+                -e POSTGRES_DB=userdb \
+                -p 5432:5432 \
+                postgres:17
+              echo "💡 Postgres container running."
+
           - name: Run backend
             run: |
-                # Get the host IP that containers can reach (usually the Docker bridge gateway)
-                HOST_IP=$(ip route | grep default | awk '{print $3}')
                 docker run -d --name backend \
                   --network myapp-network \
                   -p 8000:8000 \
                   -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
                   -e GITHUB_ACTIONS=$GITHUB_ACTIONS \
-                  --add-host=postgres:$HOST_IP my-backend:latest
+                  -e DB_HOST=postgres \
+                  my-backend:latest
                 sleep 600
                 echo "🔍 Backend container status:"
                 docker ps -a --filter name=backend

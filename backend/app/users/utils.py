@@ -18,6 +18,9 @@ def get_db_host() -> str:
         # by checking for the /.dockerenv file
         if os.path.exists("/.dockerenv"):
             print("🐳 Running in Docker container in GitHub Actions, using 'postgres' hostname")
+            db_host = os.getenv("DB_HOST")
+            if db_host:
+                return db_host
             return "postgres"  # Use mapped hostname for Docker containers
         else:
             # We're running directly on the GitHub runner, not in a container
