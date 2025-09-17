@@ -17,7 +17,7 @@ def get_db_host() -> str:
         # In GitHub Actions, check if we're running inside a Docker container
         # by checking for the /.dockerenv file
         if os.path.exists("/.dockerenv"):
-            print("🐳 Running in Docker container, using 'postgres' hostname")
+            print("🐳 Running in Docker container in GitHub Actions, using 'postgres' hostname")
             return "postgres"  # Use mapped hostname for Docker containers
         else:
             # We're running directly on the GitHub runner, not in a container
@@ -27,8 +27,10 @@ def get_db_host() -> str:
     # Check if we're running in Docker (local development)
     try:
         socket.gethostbyname("host.docker.internal")
+        print("🐳 Running in Docker container, using 'postgres' hostname")
         return "host.docker.internal"
     except socket.error:
+        print("🖥️ Running directly, using 'localhost'")
         return "localhost"
     
 
