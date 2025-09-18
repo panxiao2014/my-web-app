@@ -86,12 +86,6 @@ jobs:
                 else
                   echo "💡 Backend running."
                 fi
-
-          - name: Seed database with test users
-            run: |
-                # Run the database seeding script
-                POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} python -m backend.app.users.seed_database
-                echo "💡 Database seeded with test users (Alice and Bob)."
     
           - name: Run frontend
             run: |
