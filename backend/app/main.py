@@ -3,20 +3,21 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config.config import TEST_PING
 from app.users.userdb_requets import router as userdb_router
-from app.users.utils import init_database_session
+from app.users.utils import init_database_session, seed_database
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_database_session(app)
+    seed_database()
     try:
         yield
     finally:
         if hasattr(app.state, 'db_engine'):
             app.state.db_engine.dispose()
 
-
 app = FastAPI(title="my-web-app API", lifespan=lifespan)
+ 
 
 # Allow frontend dev server
 app.add_middleware(

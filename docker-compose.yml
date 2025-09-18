@@ -18,20 +18,25 @@ services:
     networks:
       - myapp-network
 
+
+
   backend:
+    restart: "no"
     image: my-backend:latest
     container_name: backend
     depends_on:
       postgres:
         condition: service_healthy
     environment:
-      DB_PASSWORD: ${POSTGRES_PASSWORD}  # taken from host env
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      RUNNING_IN_DOCKER: 1
     ports:
       - "8000:8000"
     networks:
       - myapp-network
 
   frontend:
+    restart: "no"
     image: my-frontend:latest
     container_name: frontend
     depends_on:
