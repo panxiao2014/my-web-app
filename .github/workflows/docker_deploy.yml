@@ -71,8 +71,7 @@ jobs:
                   --network myapp-network \
                   -p 8000:8000 \
                   -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
-                  -e GITHUB_ACTIONS=$GITHUB_ACTIONS \
-                  -e DB_HOST=postgres \
+                  -e RUNNING_IN_DOCKER=1 \
                   my-backend:latest
                 sleep 10
                 echo "🔍 Backend container status:"
