@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.main import app
-from app.users.utils import init_database_session
+from app.users.utils import init_database_session, seed_database
 from app.config.config import TEST_PING
 
 
@@ -13,6 +13,7 @@ def setup_database():
     """Set up database session for all FastAPI tests."""
     # Initialize database session for testing
     init_database_session(app)
+    seed_database()
     
     # Provide database session to tests (assumes tables and data already exist)
     SessionLocal = app.state.db_session_factory
