@@ -18,8 +18,6 @@ services:
     networks:
       - myapp-network
 
-
-
   backend:
     restart: "no"
     image: my-backend:latest
