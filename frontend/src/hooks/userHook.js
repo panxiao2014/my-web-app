@@ -1,5 +1,7 @@
 import { useState, useCallback } from "react";
 import { addUserApi, getRandomUserApi } from "../services/api";
+import { isNameValid, isAgeValid } from "../utils/utils";
+
 
 export function useAddUser() {
   const [userForm, setUserForm] = useState({ name: "", gender: "Male", age: "" });
@@ -11,6 +13,14 @@ export function useAddUser() {
 
   const addUser = useCallback(async () => {
     setError(null);
+    if (!isNameValid(userForm.name)) {
+      setError(new Error("Name must not be empty and must start with a letter (a-z or A-Z)."));
+      return;
+    }
+    if (!isAgeValid(userForm.age)) {
+      setError(new Error("Age must be between 0 and 100."));
+      return;
+    }
     try {
       await addUserApi({
         name: userForm.name,
@@ -22,7 +32,10 @@ export function useAddUser() {
     }
   }, [userForm]);
 
-  return { userForm, addUserError, updateField, addUser };
+  // Provide a hook-friendly isNameValid for consumers, bound to current name
+  const isNameValidForForm = useCallback(() => isNameValid(userForm.name), [userForm.name]);
+
+  return { userForm, addUserError, updateField, addUser, isNameValid: isNameValidForForm };
 }
 
 export function useRandomUser() {

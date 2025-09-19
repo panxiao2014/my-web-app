@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
-from .userdb_ops import choose_ramdon_user
+from .userdb_ops import choose_ramdon_user, add_user
 
 
 router = APIRouter()
@@ -12,9 +12,11 @@ def get_db(request: Request) -> Session:
 
 
 @router.post("/addUser")
-async def add_user():
-  return "addUser received"
-
+async def add_user_request(request: Request, db: Session = Depends(get_db)):
+    # get the user from the request:
+    user = await request.json()
+    add_user(db, user)
+    return {"message": "User added successfully"}
 
 @router.get("/ramdonUser")
 async def ramdon_user(db: Session = Depends(get_db)) -> dict:

@@ -3,8 +3,8 @@ import { useAddUser, useRandomUser } from "./hooks/userHook";
 
 function App() {
   const { message, error, fetchPing } = usePing();
-  const { userForm, updateField, addUser, addUserError } = useAddUser();
-  const { randomUser, fetchRandomUser, randomUserError } = useRandomUser();
+  const { userForm, addUserError, updateField, addUser} = useAddUser();
+  const { randomUser, randomUserError, fetchRandomUser } = useRandomUser();
 
   function handleAddUser(e) {
     e.preventDefault();
@@ -64,10 +64,25 @@ function App() {
                 type="number"
                 min="0"
                 max="100"
+                step="1"
                 value={userForm.age}
-                onChange={(e) => updateField("age", e.target.value)}
+                onChange={(e) => {
+                  // Only allow integer values between 0 and 100
+                  const val = e.target.value;
+                  // Allow empty string for controlled input
+                  if (val === "") {
+                    updateField("age", "");
+                  } else {
+                    const intVal = parseInt(val, 10);
+                    if (!isNaN(intVal) && intVal >= 0 && intVal <= 100) {
+                      updateField("age", intVal);
+                    }
+                  }
+                }}
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="0 - 100"
+                inputMode="numeric"
+                pattern="[0-9]*"
               />
             </div>
             <div>

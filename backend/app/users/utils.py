@@ -14,32 +14,6 @@ from pathlib import Path
 from fastapi import FastAPI
 
 
-# def get_db_host() -> str:
-#     # Check if we're running in GitHub Actions
-#     if os.getenv("GITHUB_ACTIONS"):
-#         # In GitHub Actions, check if we're running inside a Docker container
-#         # by checking for the /.dockerenv file
-#         if os.path.exists("/.dockerenv"):
-#             print("🐳 Running in Docker container in GitHub Actions, using 'postgres' hostname")
-#             db_host = os.getenv("DB_HOST")
-#             if db_host:
-#                 return db_host
-#             return "postgres"  # Use mapped hostname for Docker containers
-#         else:
-#             # We're running directly on the GitHub runner, not in a container
-#             print("🖥️ Running directly on GitHub runner, using 'localhost'")
-#             return "localhost"  # PostgreSQL service is accessible via localhost
-    
-#     # Check if we're running in Docker (local development)
-#     try:
-#         socket.gethostbyname("host.docker.internal")
-#         print("🐳 Running in Docker container, using 'postgres' hostname")
-#         return "postgres"
-#     except socket.error:
-#         print("🖥️ Running directly, using 'localhost'")
-#         return "localhost"
-    
-
 def get_db_host() -> str:
     # If running inside Docker, use docker network hostname
     if os.getenv("RUNNING_IN_DOCKER"):
