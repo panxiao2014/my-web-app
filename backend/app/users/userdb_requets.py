@@ -17,7 +17,7 @@ async def add_user():
 
 
 @router.get("/ramdonUser")
-async def ramdon_user(db: Session = Depends(get_db)):
+async def ramdon_user(db: Session = Depends(get_db)) -> dict:
     user = choose_ramdon_user(db)
     if user is None:
         raise HTTPException(status_code=404, detail="No users found in database")
