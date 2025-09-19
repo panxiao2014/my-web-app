@@ -54,6 +54,8 @@ jobs:
     
           - name: Verify backend
             run: |
+                sleep 5
+                docker ps -a
                 curl --fail http://localhost:8000/ping
                 echo "💡 Backend verified."
     
