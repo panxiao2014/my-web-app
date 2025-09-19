@@ -46,6 +46,8 @@ jobs:
                 echo "💡 Docker network created."
 
           - name: Run Docker Compose
+            env:
+              POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
             run: |
                 docker-compose -f docker-compose.yml up -d
                 echo "💡 Docker containers running." 
