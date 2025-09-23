@@ -3,8 +3,12 @@ import { useAddUser, useRandomUser } from "./hooks/userHook";
 
 function App() {
   const { message, error, fetchPing } = usePing();
-  const { userForm, addUserError, updateField, addUser} = useAddUser();
+  const { userForm, addUserError, addUserResponse, updateField, addUser, clearResponse} = useAddUser();
   const { randomUser, randomUserError, fetchRandomUser } = useRandomUser();
+
+  const closePopup = () => {
+    clearResponse();
+  };
 
   function handleAddUser(e) {
     e.preventDefault();
@@ -128,6 +132,48 @@ function App() {
           </div>
         </div>
       </div>
+
+      {/* Popup Modal */}
+      {addUserResponse && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4 shadow-xl border-2 border-gray-300 dark:border-gray-600 pointer-events-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                {addUserResponse.status_code === 200 ? "Success" : "Error"}
+              </h3>
+              <button
+                onClick={closePopup}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="mb-4">
+              <p className={`text-sm ${
+                addUserResponse.status_code === 200 
+                  ? "text-green-600 dark:text-green-400" 
+                  : "text-red-600 dark:text-red-400"
+              }`}>
+                {addUserResponse.message}
+              </p>
+            </div>
+            <div className="flex justify-end">
+              <button
+                onClick={closePopup}
+                className={`px-4 py-2 rounded-lg text-white font-medium ${
+                  addUserResponse.status_code === 200 
+                    ? "bg-green-600 hover:bg-green-700" 
+                    : "bg-red-600 hover:bg-red-700"
+                } transition-colors duration-200`}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

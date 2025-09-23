@@ -8,7 +8,11 @@ from app.users.utils import init_database_session, seed_database
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_database_session(app)
+    try:
+        init_database_session(app)
+    except Exception as e:
+        print(f"❌ Failed to initialize database session: {e}")
+        raise
     seed_database()
     try:
         yield

@@ -1,5 +1,6 @@
 TEST_PING = "pingping!"
 
+
 from pydantic import BaseModel, Field
 from typing import Dict
 
@@ -10,5 +11,5 @@ class UserAddResultType(BaseModel):
 USER_ADD_RESULT: Dict[str, UserAddResultType] = {
     "success": UserAddResultType(status_code=200, message="User added successfully"),
     "duplicate": UserAddResultType(status_code=401, message="User already exsited"),
-    "error": UserAddResultType(status_code=500, message="Database error"),
+    "error": UserAddResultType(status_code=501, message="Database error"),
 }

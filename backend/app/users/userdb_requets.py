@@ -15,8 +15,8 @@ def get_db(request: Request) -> Session:
 async def add_user_request(request: Request, db: Session = Depends(get_db)):
     # get the user from the request:
     user = await request.json()
-    add_user(db, user)
-    return {"message": "User added successfully"}
+    ret = add_user(db, user)
+    return ret
 
 @router.get("/ramdonUser")
 async def ramdon_user(db: Session = Depends(get_db)) -> dict:
