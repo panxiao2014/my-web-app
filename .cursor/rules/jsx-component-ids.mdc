@@ -1,0 +1,82 @@
+---
+globs: *.jsx,*.tsx,*.js,*.ts
+description: Always add unique and meaningful IDs to JSX components for better testability and accessibility
+---
+
+# JSX Component ID Rule
+
+- Always add unique and meaningful `id` attributes to JSX components for better testability and accessibility.
+- Use descriptive names that clearly indicate the component's purpose and context.
+- Follow kebab-case naming convention for IDs (e.g., `user-profile-form`, `add-user-button`).
+- Include `data-testid` attributes alongside `id` for testing purposes.
+- Ensure IDs are unique within the component scope.
+
+## Examples
+
+### Good Examples
+```jsx
+// Form components
+<form id="add-user-form" data-testid="add-user-form">
+  <input id="user-name-input" data-testid="user-name-input" />
+  <button id="submit-user-button" data-testid="submit-user-button">Submit</button>
+</form>
+
+// Modal components
+<div id="user-popup-modal" data-testid="user-popup-modal">
+  <div id="user-popup-content" data-testid="user-popup-content">
+    <div id="user-popup-message" data-testid="user-popup-message">
+      <p>Success message</p>
+    </div>
+  </div>
+</div>
+
+// Navigation components
+<nav id="main-navigation" data-testid="main-navigation">
+  <ul id="nav-menu-list" data-testid="nav-menu-list">
+    <li id="home-nav-item" data-testid="home-nav-item">Home</li>
+  </ul>
+</nav>
+```
+
+### Bad Examples
+```jsx
+// Avoid generic or unclear IDs
+<div id="container">
+<div id="box">
+<div id="item">
+
+// Avoid IDs without context
+<div id="form">
+<div id="button">
+<div id="input">
+```
+
+## Naming Conventions
+
+- **Forms**: `{action}-{entity}-form` (e.g., `add-user-form`, `edit-profile-form`)
+- **Buttons**: `{action}-{entity}-button` (e.g., `submit-user-button`, `cancel-edit-button`)
+- **Modals**: `{entity}-{type}-modal` (e.g., `user-popup-modal`, `confirmation-dialog-modal`)
+- **Inputs**: `{entity}-{field}-input` (e.g., `user-name-input`, `email-address-input`)
+- **Sections**: `{entity}-{purpose}-section` (e.g., `user-profile-section`, `settings-panel-section`)
+
+## Testing Benefits
+
+- Enables reliable element selection in tests using `get_by_test_id()`
+- Provides fallback selection methods with `get_by_id()`
+- Improves test maintainability and readability
+- Reduces test brittleness from CSS class changes
+
+## Accessibility Benefits
+
+- Improves screen reader navigation
+- Enables proper form labeling with `htmlFor` attributes
+- Supports ARIA attributes and relationships
+- Enhances keyboard navigation
+
+## Enforcement
+
+- All interactive JSX elements must have unique IDs
+- All form elements must have both `id` and `data-testid`
+- All modal and popup components must have descriptive IDs
+- All navigation elements must have contextual IDs
+- IDs must be meaningful and follow the naming conventions
