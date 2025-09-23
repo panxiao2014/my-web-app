@@ -135,8 +135,8 @@ function App() {
 
       {/* Popup Modal */}
       {addUserResponse && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4 shadow-xl border-2 border-gray-300 dark:border-gray-600 pointer-events-auto">
+        <div id="add-user-popup-modal" data-testid="add-user-popup-modal" className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+          <div id="add-user-popup-content" data-testid="add-user-popup-content" className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4 shadow-xl border-2 border-gray-300 dark:border-gray-600 pointer-events-auto">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {addUserResponse.status_code === 200 ? "Success" : "Error"}
@@ -150,7 +150,7 @@ function App() {
                 </svg>
               </button>
             </div>
-            <div className="mb-4">
+            <div className="mb-4" id="add-user-popup-message" data-testid="add-user-popup-message">
               <p className={`text-sm ${
                 addUserResponse.status_code === 200 
                   ? "text-green-600 dark:text-green-400" 

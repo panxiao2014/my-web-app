@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
-from .userdb_ops import choose_ramdon_user, add_user
+from .userdb_ops import choose_ramdon_user, add_user, delete_user
 
 
 router = APIRouter()
@@ -16,6 +16,13 @@ async def add_user_request(request: Request, db: Session = Depends(get_db)):
     # get the user from the request:
     user = await request.json()
     ret = add_user(db, user)
+    return ret
+
+@router.post("/deleteUser")
+async def delete_user_request(request: Request, db: Session = Depends(get_db)):
+    # get the user from the request:
+    user = await request.json()
+    ret = delete_user(db, user)
     return ret
 
 @router.get("/ramdonUser")

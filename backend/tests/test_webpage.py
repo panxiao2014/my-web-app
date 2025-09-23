@@ -1,7 +1,26 @@
 import pytest
 from playwright.sync_api import Page, expect
+from sqlalchemy.orm import Session
 
-from app.config.config import TEST_PING
+from app.config.config import TEST_PING, FakeUser, USER_ADD_RESULT
+from app.users.userdb_ops import delete_fake_user
+from app.users.utils import init_database_session
+from app.main import app
+
+
+@pytest.fixture(scope="module")
+def setup_database():
+    """Set up database session for e2e tests."""
+    # Initialize database session for testing
+    init_database_session(app)
+    
+    # Provide database session to tests
+    SessionLocal = app.state.db_session_factory
+    db = SessionLocal()
+    try:
+        yield db  # Provide the database session to tests
+    finally:
+        db.close()
 
 
 @pytest.mark.e2e
@@ -60,5 +79,48 @@ def test_click_show_me_a_user_button_displays_user_info(page: Page):
     # Verify that the "No user selected yet." text is no longer visible
     expect(page.get_by_text("No user selected yet.")).not_to_be_visible()
 
+
+@pytest.mark.e2e
+def test_click_add_user_button(page: Page, setup_database: Session):
+    """
+    Use FakeUser to test the add user button.
+    """
+
+    # Open the frontend app
+    page.goto("http://localhost:5173/")
+
+    # Locate the add-user-form div by its data-testid
+    add_user_form = page.get_by_test_id("add-user-form")
+
+    # Fill the form fields using data from FakeUser
+    add_user_form.get_by_label("Name").fill(FakeUser["name"])
+    add_user_form.get_by_label("Gender").select_option(FakeUser["gender"])
+    add_user_form.get_by_label("Age").fill(str(FakeUser["age"]))
+
+    # Click the "Add User" button within the form
+    add_user_form.get_by_role("button", name="Add User").click()
+    
+    # Wait for the popup modal to appear using the friendly ID
+    popup_modal = page.get_by_test_id("add-user-popup-modal")
+    expect(popup_modal).to_be_visible()
+    
+    # Verify the popup content is visible using the friendly ID
+    popup_content = page.get_by_test_id("add-user-popup-content")
+    expect(popup_content).to_be_visible()
+    
+    # Locate the popup message by its ID and check for the success message within it
+    popup_message = popup_content.get_by_test_id("add-user-popup-message")
+    expect(popup_message).to_contain_text(USER_ADD_RESULT["success"].message)
+    
+    # Verify the OK button is present and clickable
+    ok_button = popup_content.get_by_role("button", name="OK")
+    expect(ok_button).to_be_visible()
+    expect(ok_button).to_be_enabled()
+    
+    # Clean up: delete the fake user after test completion
+    try:
+        delete_fake_user(setup_database)
+    except Exception as e:
+        print(f"Failed to delete fake user: {e}")
 
 

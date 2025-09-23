@@ -13,3 +13,15 @@ USER_ADD_RESULT: Dict[str, UserAddResultType] = {
     "duplicate": UserAddResultType(status_code=401, message="User already exsited"),
     "error": UserAddResultType(status_code=501, message="Database error"),
 }
+
+USER_DELETE_RESULT: Dict[str, UserAddResultType] = {
+    "success": UserAddResultType(status_code=200, message="User deleted successfully"),
+    "not_found": UserAddResultType(status_code=401, message="User not found"),
+    "error": UserAddResultType(status_code=501, message="Database error"),
+}
+
+FakeUser = {
+    "name": "BADBEFF_USER_123",
+    "gender": "Male",
+    "age": 20
+}

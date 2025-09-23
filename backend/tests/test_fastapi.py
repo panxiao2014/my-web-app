@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from app.main import app
 from app.users.utils import init_database_session, seed_database
 from app.config.config import TEST_PING
+from app.config.config import USER_ADD_RESULT, USER_DELETE_RESULT, FakeUser
 
 
 @pytest.fixture(scope="module")
@@ -66,4 +67,19 @@ def test_ramdon_user_returns_valid_user(setup_database):
     
     # Verify name is not empty
     assert len(body["name"]) > 0
+
+@pytest.mark.fastapi
+def test_add_and_delete_user():
+    """Test that /addUser and /deleteUser endpoints work correctly."""
+
+    client = TestClient(app)
+    response = client.post("/addUser", json=FakeUser)
+    assert response.status_code == USER_ADD_RESULT["success"].status_code
+    body = response.json()
+    assert body.get("message") == USER_ADD_RESULT["success"].message
+
+    response = client.post("/deleteUser", json={"name": FakeUser["name"]})
+    assert response.status_code == USER_DELETE_RESULT["success"].status_code
+    body = response.json()
+    assert body.get("message") == USER_DELETE_RESULT["success"].message
 
