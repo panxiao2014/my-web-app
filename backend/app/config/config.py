@@ -1,4 +1,5 @@
 TEST_PING = "pingping!"
+LOCAL_HOST_URL = "http://localhost:5173"
 
 
 from pydantic import BaseModel, Field

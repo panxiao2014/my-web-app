@@ -2,7 +2,7 @@ import pytest
 from playwright.sync_api import Page, expect
 from sqlalchemy.orm import Session
 
-from app.config.config import TEST_PING, FakeUser, USER_ADD_RESULT
+from app.config.config import TEST_PING, FakeUser, USER_ADD_RESULT, LOCAL_HOST_URL
 from app.users.userdb_ops import delete_fake_user
 from app.users.utils import init_database_session
 from app.main import app
@@ -26,7 +26,7 @@ def setup_database():
 @pytest.mark.e2e
 def test_click_button_displays_test_ping(page: Page):
     # Open the frontend app
-    page.goto("http://localhost:5173/")
+    page.goto(LOCAL_HOST_URL)
 
     # Click the button labeled "Click me"
     page.get_by_role("button", name="Click me").click()
@@ -55,7 +55,7 @@ def test_click_button_displays_test_ping(page: Page):
 @pytest.mark.e2e
 def test_click_show_me_a_user_button_displays_user_info(page: Page):
     # Open the frontend app
-    page.goto("http://localhost:5173/")
+    page.goto(LOCAL_HOST_URL)
 
     # Click the button labeled "Show me a user"
     page.get_by_role("button", name="Show me a user").click()
@@ -87,7 +87,7 @@ def test_click_add_user_button(page: Page, setup_database: Session):
     """
 
     # Open the frontend app
-    page.goto("http://localhost:5173/")
+    page.goto(LOCAL_HOST_URL)
 
     # Locate the add-user-form div by its data-testid
     add_user_form = page.get_by_test_id("add-user-form")
