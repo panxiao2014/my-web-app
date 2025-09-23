@@ -28,6 +28,13 @@ def test_click_button_displays_test_ping(page: Page):
     # Open the frontend app
     page.goto(LOCAL_HOST_URL)
 
+    # Navigate to the Main tab (should be default, but ensure we're on the right tab)
+    page.get_by_test_id("main-nav-button").click()
+    
+    # Wait for the main content to be visible
+    main_content = page.get_by_test_id("main-content")
+    expect(main_content).to_be_visible()
+
     # Click the button labeled "Click me"
     page.get_by_role("button", name="Click me").click()
 
@@ -56,6 +63,13 @@ def test_click_button_displays_test_ping(page: Page):
 def test_click_show_me_a_user_button_displays_user_info(page: Page):
     # Open the frontend app
     page.goto(LOCAL_HOST_URL)
+
+    # Navigate to the Users tab first
+    page.get_by_test_id("users-nav-button").click()
+    
+    # Wait for the users content to be visible
+    users_content = page.get_by_test_id("users-content")
+    expect(users_content).to_be_visible()
 
     # Click the button labeled "Show me a user"
     page.get_by_role("button", name="Show me a user").click()
@@ -88,7 +102,14 @@ def test_click_add_user_button(page: Page, setup_database: Session):
 
     # Open the frontend app
     page.goto(LOCAL_HOST_URL)
-
+    
+    # Navigate to the Users tab
+    page.get_by_test_id("users-nav-button").click()
+    
+    # Wait for the users content to be visible
+    users_content = page.get_by_test_id("users-content")
+    expect(users_content).to_be_visible()
+    
     # Locate the add-user-form div by its data-testid
     add_user_form = page.get_by_test_id("add-user-form")
 
