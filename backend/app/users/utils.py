@@ -15,6 +15,11 @@ from fastapi import FastAPI
 
 
 def get_db_host() -> str:
+    #If running in AWS, use RDS_DATABASE_HOST defined in backend task:
+    if os.getenv("RDS_DATABASE_HOST"):
+        print("🐳 Detected AWS, using 'RDS_DATABASE_HOST'")
+        return os.getenv("RDS_DATABASE_HOST")
+    
     # If running inside Docker, use docker network hostname
     if os.getenv("RUNNING_IN_DOCKER"):
         print("🐳 Detected Docker via RUNNING_IN_DOCKER env, using 'postgres'")
