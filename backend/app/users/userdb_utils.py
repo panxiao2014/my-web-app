@@ -44,9 +44,11 @@ def read_postgres_password() -> str:
         RuntimeError: If password is not found in environment variable or file
     """
     # First try to get from environment variable (for AWS deployment)
+    # the value is got from the AWS Secrets Manager by secret ARN, which is defined in the AWS Task and have the following format:
+    # {"username":"postgres","password":"<password>","engine":"postgres","host":"userdb.abcdefg.ap-northeast-3.rds.amazonaws.com","port":5432,"dbInstanceIdentifier":"userdb"}
     postgres_secret = os.getenv("POSTGRES_SECRET")
     if postgres_secret:
-        logger.info(f"🐳 Detected POSTGRES_SECRET:{postgres_secret}")
+        logger.info(f"🐳 Detected POSTGRES_SECRET")
         return json.loads(postgres_secret)["password"]
     
     # Then try to get from environment variable (for CI/CD in Github Actions)
