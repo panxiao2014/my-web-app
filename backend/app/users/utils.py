@@ -5,6 +5,7 @@ This module contains shared functions used across user-related database operatio
 
 import os
 import sys
+import json
 from pathlib import Path
 from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import sessionmaker
@@ -41,9 +42,10 @@ def read_postgres_password() -> str:
         RuntimeError: If password is not found in environment variable or file
     """
     # First try to get from environment variable (for production/CI)
-    password = os.getenv("POSTGRES_PASSWORD")
-    if password:
-        return password
+    postgres_secret = os.getenv("POSTGRES_SECRET")
+    if postgres_secret:
+        print(f"🐳 Detected POSTGRES_SECRET:{postgres_secret}")
+        return json.loads(postgres_secret)["password"]
     
     # Fallback to file for local development
     tokens_path = Path(__file__).resolve().parent.parent.parent / "tokens" / "postgresql.txt"
