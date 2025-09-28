@@ -10,24 +10,26 @@ from pathlib import Path
 from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import sessionmaker
 from .models import Base, Users
-import socket
 from pathlib import Path
 from fastapi import FastAPI
+#importt CustomLogger:
+from utils.logger_util import CustomLogger
 
+logger = CustomLogger('DB')
 
 def get_db_host() -> str:
     #If running in AWS, use RDS_DATABASE_HOST defined in backend task:
     if os.getenv("RDS_DATABASE_HOST"):
-        print("🐳 Detected AWS, using 'RDS_DATABASE_HOST'")
+        logger.info("🐳 Detected AWS, using 'RDS_DATABASE_HOST'")
         return os.getenv("RDS_DATABASE_HOST")
     
     # If running inside Docker, use docker network hostname
     if os.getenv("RUNNING_IN_DOCKER"):
-        print("🐳 Detected Docker via RUNNING_IN_DOCKER env, using 'postgres'")
+        logger.info("🐳 Detected Docker via RUNNING_IN_DOCKER env, using 'postgres'")
         return "postgres"
 
     # Otherwise, fallback to localhost
-    print("🖥️ Not running in Docker, using 'localhost'")
+    logger.info("🖥️ Not running in Docker, using 'localhost'")
     return "localhost"
     
 
@@ -44,13 +46,13 @@ def read_postgres_password() -> str:
     # First try to get from environment variable (for AWS deployment)
     postgres_secret = os.getenv("POSTGRES_SECRET")
     if postgres_secret:
-        print(f"🐳 Detected POSTGRES_SECRET:{postgres_secret}")
+        logger.info(f"🐳 Detected POSTGRES_SECRET:{postgres_secret}")
         return json.loads(postgres_secret)["password"]
     
     # Then try to get from environment variable (for CI/CD in Github Actions)
     postgres_password = os.getenv("POSTGRES_PASSWORD")
     if postgres_password:
-        print(f"🐳 Detected POSTGRES_PASSWORD:{postgres_password}")
+        logger.info(f"🐳 Detected POSTGRES_PASSWORD:{postgres_password}")
         return postgres_password
     
     # Fallback to file for local development
@@ -96,7 +98,7 @@ def seed_database():
             # Check if users already exist
             existing_users = db.query(Users).count()
             if existing_users > 0:
-                print(f"🛒 Database already has {existing_users} users. Skipping seeding.")
+                logger.info(f"🛒 Database already has {existing_users} users. Skipping seeding.")
                 return
             
             # Create test users
@@ -117,23 +119,23 @@ def seed_database():
             retrieved_names = {u.name for u in retrieved}
             expected_names = {u.name for u in test_users}
             if retrieved_names != expected_names:
-                print("🛒 Error: Seed verification failed. Expected users not found in database.")
-                print(f"🛒 Expected: {sorted(expected_names)}, Retrieved: {sorted(retrieved_names)}")
+                logger.error("🛒 Error: Seed verification failed. Expected users not found in database.")
+                logger.error(f"🛒 Expected: {sorted(expected_names)}, Retrieved: {sorted(retrieved_names)}")
                 sys.exit(1)
             
-            print(f"🛒 Successfully seeded database with {len(test_users)} test users:")
+            logger.info(f"🛒 Successfully seeded database with {len(test_users)} test users:")
             for user in retrieved:
-                print(f"  - {user.name} ({user.gender}, age {user.age})")
+                logger.info(f"  - {user.name} ({user.gender}, age {user.age})")
                 
         except Exception as e:
             db.rollback()
-            print(f"🛒 Error seeding database: {e}")
+            logger.error(f"🛒 Error seeding database: {e}")
             sys.exit(1)
         finally:
             db.close()
             
     except Exception as e:
-        print(f"🛒 Error connecting to database: {e}")
+        logger.error(f"🛒 Error connecting to database: {e}")
         sys.exit(1)
 
 def init_database_session(app: FastAPI):

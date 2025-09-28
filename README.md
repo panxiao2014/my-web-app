@@ -16,18 +16,18 @@ sqlacodegen postgresql://<username>:<password>@localhost:5432/userdb --outfile b
 
 # How to run
 
+Backend:
+```sh
+cd backend
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
 Frontend:
 
 ```sh
 cd frontend
 
 npm run dev
-```
-
-Backend:
-```sh
-cd backend
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 # Run in docker

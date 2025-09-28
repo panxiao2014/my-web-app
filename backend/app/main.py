@@ -4,14 +4,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config.config import TEST_PING
 from app.users.userdb_requets import router as userdb_router
 from app.users.userdb_utils import init_database_session, seed_database
+from utils.logger_util import CustomLogger
 
+logger = CustomLogger('MAIN')
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:
         init_database_session(app)
     except Exception as e:
-        print(f"❌ Failed to initialize database session: {e}")
+        logger.error(f"❌ Failed to initialize database session: {e}")
         raise
     seed_database()
     try:

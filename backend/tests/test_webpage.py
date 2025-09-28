@@ -6,6 +6,9 @@ from app.config.config import TEST_PING, FakeUser, USER_ADD_RESULT, LOCAL_HOST_U
 from app.users.userdb_ops import delete_fake_user
 from app.users.userdb_utils import init_database_session
 from app.main import app
+from utils.logger_util import CustomLogger
+
+logger = CustomLogger('TEST_WEBPAGE')
 
 
 @pytest.fixture(scope="module")
@@ -142,6 +145,6 @@ def test_click_add_user_button(page: Page, setup_database: Session):
     try:
         delete_fake_user(setup_database)
     except Exception as e:
-        print(f"Failed to delete fake user: {e}")
+        logger.error(f"Failed to delete fake user: {e}")
 
 
