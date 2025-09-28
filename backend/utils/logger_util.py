@@ -1,5 +1,6 @@
 import logging
 import sys
+import os
 
 
 class ColoredFormatter(logging.Formatter):
@@ -15,12 +16,22 @@ class ColoredFormatter(logging.Formatter):
         'RESET': '\033[0m'        # Reset color
     }
     
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Disable colors in containerized environments
+        self.use_colors = self._should_use_colors()
+    
+    def _should_use_colors(self):
+        """Determine if colors should be used based on environment."""
+        # Disable colors only if running in ECS
+        return not os.getenv('RUN_IN_ECS')
+    
     def format(self, record):
         # Get the original formatted message
         original = super().format(record)
         
-        # Add color to the log level
-        if record.levelname in self.COLORS:
+        # Add color to the log level only if colors are enabled
+        if self.use_colors and record.levelname in self.COLORS:
             colored_level = f"{self.COLORS[record.levelname]}{record.levelname}{self.COLORS['RESET']}"
             # Replace the level name in the original message with the colored version
             original = original.replace(record.levelname, colored_level)
