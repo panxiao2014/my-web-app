@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config.config import TEST_PING
 from app.users.userdb_requets import router as userdb_router
-from app.users.utils import init_database_session, seed_database
+from app.users.userdb_utils import init_database_session, seed_database
 
 
 @asynccontextmanager

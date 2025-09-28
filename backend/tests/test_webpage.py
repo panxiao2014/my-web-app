@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.config.config import TEST_PING, FakeUser, USER_ADD_RESULT, LOCAL_HOST_URL
 from app.users.userdb_ops import delete_fake_user
-from app.users.utils import init_database_session
+from app.users.userdb_utils import init_database_session
 from app.main import app
 
 

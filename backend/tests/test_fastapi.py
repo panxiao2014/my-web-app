@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.main import app
-from app.users.utils import init_database_session, seed_database
+from app.users.userdb_utils import init_database_session, seed_database
 from app.config.config import TEST_PING
 from app.config.config import USER_ADD_RESULT, USER_DELETE_RESULT, FakeUser
 
