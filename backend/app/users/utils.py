@@ -41,11 +41,17 @@ def read_postgres_password() -> str:
     Raises:
         RuntimeError: If password is not found in environment variable or file
     """
-    # First try to get from environment variable (for production/CI)
+    # First try to get from environment variable (for AWS deployment)
     postgres_secret = os.getenv("POSTGRES_SECRET")
     if postgres_secret:
         print(f"🐳 Detected POSTGRES_SECRET:{postgres_secret}")
         return json.loads(postgres_secret)["password"]
+    
+    # Then try to get from environment variable (for CI/CD in Github Actions)
+    postgres_password = os.getenv("POSTGRES_PASSWORD")
+    if postgres_password:
+        print(f"🐳 Detected POSTGRES_PASSWORD:{postgres_password}")
+        return postgres_password
     
     # Fallback to file for local development
     tokens_path = Path(__file__).resolve().parent.parent.parent / "tokens" / "postgresql.txt"
