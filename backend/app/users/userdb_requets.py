@@ -25,7 +25,7 @@ async def delete_user_request(request: Request, db: Session = Depends(get_db)):
     ret = delete_user(db, user)
     return ret
 
-@router.get("/ramdonUser")
+@router.get("/randomUser")
 async def ramdon_user(db: Session = Depends(get_db)) -> dict:
     user = choose_ramdon_user(db)
     if user is None:

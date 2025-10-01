@@ -40,10 +40,10 @@ def test_ping_returns_test_ping_string():
 
 @pytest.mark.fastapi
 def test_ramdon_user_returns_valid_user(setup_database):
-    """Test that /ramdonUser endpoint returns a valid user when users exist in database."""
+    """Test that /randomUser endpoint returns a valid user when users exist in database."""
     # Test the endpoint
     client = TestClient(app)
-    response = client.get("/ramdonUser")
+    response = client.get("/randomUser")
     
     # Verify response
     assert response.status_code == 200

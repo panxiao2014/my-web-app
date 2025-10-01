@@ -19,7 +19,7 @@ export async function addUserApi({ name, gender, age }) {
 }
 
 export async function getRandomUserApi() {
-  const res = await fetch("/api/ramdonUser");
+  const res = await fetch("/api/randomUser");
   if (!res.ok) {
     throw new Error("Failed to fetch random user");
   }
