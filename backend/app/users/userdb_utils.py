@@ -15,7 +15,7 @@ from fastapi import FastAPI
 #importt CustomLogger:
 from utils.logger_util import CustomLogger
 
-logger = CustomLogger('DB')
+logger = CustomLogger('DB_UTILS')
 
 def get_db_host() -> str:
     #If running in AWS, use RDS_DATABASE_HOST defined in backend task:

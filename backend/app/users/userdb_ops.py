@@ -3,6 +3,9 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from .models import Users
 from app.config.config import UserAddResultType, USER_ADD_RESULT, USER_DELETE_RESULT, FakeUser
+from utils.logger_util import CustomLogger
+
+logger = CustomLogger('DB_OPS')
 
 
 def choose_ramdon_user(db: Session) -> Optional[Dict[str, Any]]:
@@ -11,7 +14,11 @@ def choose_ramdon_user(db: Session) -> Optional[Dict[str, Any]]:
     Returns None if no users exist in the database.
     """
     # Get total count of users
-    total_users = db.query(Users).count()
+    try:
+        total_users = db.query(Users).count()
+    except Exception as e:
+        logger.error(f"⚠️ Error getting total users: {e}")
+        return None
     
     if total_users == 0:
         return None
