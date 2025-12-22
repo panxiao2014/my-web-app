@@ -1,4 +1,5 @@
-import Text from '../../components/Text'
+import Text from '../../components/App2/Text'
+import '../../styles/App2.css'
 
 function App2() {
   return (

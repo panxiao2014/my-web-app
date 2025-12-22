@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import Button from '../../components/Button'
+import Button from '../../components/App1/Button'
 import { sendPing } from './api'
+import '../../styles/App1.css'
 
 function App1() {
   const [response, setResponse] = useState('')

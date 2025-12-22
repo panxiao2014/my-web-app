@@ -1,0 +1,29 @@
+/* App1 specific */
+.app1-container {
+    max-width: 800px;
+  }
+  
+  .app1-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .app1-button:hover {
+    background-color: #2980b9;
+  }
+  
+  .app1-response {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #2ecc71;
+    color: white;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: bold;
+  }
