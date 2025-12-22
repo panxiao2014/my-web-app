@@ -1,0 +1,150 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+        app1: ${{ steps.filter.outputs.app1 }}
+        app2: ${{ steps.filter.outputs.app2 }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed files
+        id: filter
+        run: |
+          # Get list of changed files
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }})
+          else
+            CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+          fi
+          
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+          
+          # Check if App1 files changed
+          if echo "$CHANGED_FILES" | grep -qE "(frontend/src/apps/App1|backend/apps/App1|backend/tests/App1)"; then
+            echo "app1=true" >> $GITHUB_OUTPUT
+            echo "App1 files changed"
+          else
+            echo "app1=false" >> $GITHUB_OUTPUT
+            echo "App1 files not changed"
+          fi
+          
+          # Check if App2 files changed
+          if echo "$CHANGED_FILES" | grep -qE "(frontend/src/apps/App2|backend/apps/App2|backend/tests/App2)"; then
+            echo "app2=true" >> $GITHUB_OUTPUT
+            echo "App2 files changed"
+          else
+            echo "app2=false" >> $GITHUB_OUTPUT
+            echo "App2 files not changed"
+          fi
+
+  test-app1:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.app1 == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run App1 tests
+        run: |
+          cd backend
+          pytest -m app1 -v
+
+  test-app2:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.app2 == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run App2 tests
+        run: |
+          cd backend
+          pytest -m app2 -v
+
+  test-summary:
+    needs: [detect-changes, test-app1, test-app2]
+    if: always()
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Test Summary
+        run: |
+          echo "Test Results Summary:"
+          echo "App1 Changed: ${{ needs.detect-changes.outputs.app1 }}"
+          echo "App2 Changed: ${{ needs.detect-changes.outputs.app2 }}"
+          
+          if [ "${{ needs.test-app1.result }}" == "success" ]; then
+            echo "✅ App1 tests passed"
+          elif [ "${{ needs.test-app1.result }}" == "skipped" ]; then
+            echo "⏭️  App1 tests skipped (no changes)"
+          else
+            echo "❌ App1 tests failed"
+            exit 1
+          fi
+          
+          if [ "${{ needs.test-app2.result }}" == "success" ]; then
+            echo "✅ App2 tests passed"
+          elif [ "${{ needs.test-app2.result }}" == "skipped" ]; then
+            echo "⏭️  App2 tests skipped (no changes)"
+          else
+            echo "❌ App2 tests failed"
+            exit 1
+          fi
