@@ -11,7 +11,7 @@ services:
   frontend:
     restart: "no"
     image: my-web-app-frontend:latest
-    container_name: frontend
+    container_name: my-web-app-frontend
     depends_on:
       backend:
         condition: service_started
