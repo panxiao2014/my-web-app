@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  backend:
+    restart: "no"
+    image: my-web-app-backend:latest
+    container_name: backend.mywebapp.local
+    networks:
+      - my-web-app-network
+
+  frontend:
+    restart: "no"
+    image: my-web-app-frontend:latest
+    container_name: frontend
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "80:80"
+    networks:
+      - my-web-app-network
+
+networks:
+  my-web-app-network:
+    driver: bridge
+
