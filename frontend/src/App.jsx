@@ -2,6 +2,7 @@ import { useState } from 'react'
 import NavigationPane from './components/NavigationPane'
 import App1 from './apps/App1/App1'
 import App2 from './apps/App2/App2'
+import Zhongkao from './apps/Zhongkao/Zhongkao'
 
 function App() {
   const [activeApp, setActiveApp] = useState('App1')
@@ -12,6 +13,8 @@ function App() {
         return <App1 />
       case 'App2':
         return <App2 />
+      case 'Zhongkao':
+        return <Zhongkao />
       default:
         return <App1 />
     }

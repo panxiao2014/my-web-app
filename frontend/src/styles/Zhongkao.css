@@ -1,0 +1,120 @@
+/* Zhongkao specific */
+.zhongkao-container {
+    max-width: 600px;
+  }
+  
+  .zhongkao-page-indicator {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #7f8c8d;
+  }
+  
+  .zhongkao-content {
+    margin-top: 30px;
+    min-height: 200px;
+  }
+  
+  .zhongkao-page {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Navigation buttons */
+  .zhongkao-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+  
+  .zhongkao-button {
+    padding: 12px 30px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .zhongkao-button-previous {
+    background-color: #95a5a6;
+    color: white;
+  }
+  
+  .zhongkao-button-previous:hover:not(:disabled) {
+    background-color: #7f8c8d;
+  }
+  
+  .zhongkao-button-next {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .zhongkao-button-next:hover:not(:disabled) {
+    background-color: #2980b9;
+  }
+  
+  .zhongkao-button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  /* Text Input Component */
+  .zhongkao-text-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .zhongkao-input-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #2c3e50;
+  }
+  
+  .zhongkao-input-field {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+  }
+  
+  .zhongkao-input-field:focus {
+    outline: none;
+    border-color: #3498db;
+  }
+  
+  .zhongkao-input-field.error {
+    border-color: #e74c3c;
+  }
+  
+  .zhongkao-error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: -5px;
+  }
+  
+  /* Dropdown Component */
+  .zhongkao-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .zhongkao-select-field {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.3s;
+  }
+  
+  .zhongkao-select-field:focus {
+    outline: none;
+    border-color: #3498db;
+  }

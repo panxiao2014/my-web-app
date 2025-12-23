@@ -7,11 +7,19 @@ function NavigationPane({ activeApp, setActiveApp }) {
         >
           App1
         </button>
+        
         <button
           className={`nav-button ${activeApp === 'App2' ? 'active' : ''}`}
           onClick={() => setActiveApp('App2')}
         >
           App2
+        </button>
+
+        <button
+          className={`nav-button ${activeApp === 'Zhongkao' ? 'active' : ''}`}
+          onClick={() => setActiveApp('Zhongkao')}
+        >
+          中考
         </button>
       </nav>
     )

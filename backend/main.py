@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from apps.App1.routes import router as app1_router
 from apps.App2.routes import router as app2_router
+from apps.Zhongkao.routes import router as zhongkao_router
 
 app = FastAPI()
 
@@ -17,3 +18,4 @@ app.add_middleware(
 # Include routers
 app.include_router(app1_router)
 app.include_router(app2_router)
+app.include_router(zhongkao_router)

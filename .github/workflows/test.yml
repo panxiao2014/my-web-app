@@ -12,6 +12,7 @@ jobs:
     outputs:
         app1: ${{ steps.filter.outputs.app1 }}
         app2: ${{ steps.filter.outputs.app2 }}
+        zhongkao: ${{ steps.filter.outputs.zhongkao }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -47,6 +48,15 @@ jobs:
           else
             echo "app2=false" >> $GITHUB_OUTPUT
             echo "App2 files not changed"
+          fi
+
+          # Check if Zhongkao files changed
+          if echo "$CHANGED_FILES" | grep -qE "(frontend/src/apps/Zhongkao|backend/apps/Zhongkao|backend/tests/Zhongkao)"; then
+            echo "zhongkao=true" >> $GITHUB_OUTPUT
+            echo "Zhongkao files changed"
+          else
+            echo "zhongkao=false" >> $GITHUB_OUTPUT
+            echo "Zhongkao files not changed"
           fi
 
   test-app1:
@@ -119,8 +129,43 @@ jobs:
           cd backend
           pytest -m app2 -v
 
+  test-zhongkao:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.zhongkao == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run Zhongkao tests
+        run: |
+          cd backend
+          pytest -m zhongkao -v
+
   test-summary:
-    needs: [detect-changes, test-app1, test-app2]
+    needs: [detect-changes, test-app1, test-app2, test-zhongkao]
     if: always()
     runs-on: ubuntu-latest
     
@@ -130,6 +175,7 @@ jobs:
           echo "Test Results Summary:"
           echo "App1 Changed: ${{ needs.detect-changes.outputs.app1 }}"
           echo "App2 Changed: ${{ needs.detect-changes.outputs.app2 }}"
+          echo "Zhongkao Changed: ${{ needs.detect-changes.outputs.zhongkao }}"
           
           if [ "${{ needs.test-app1.result }}" == "success" ]; then
             echo "✅ App1 tests passed"
@@ -146,5 +192,14 @@ jobs:
             echo "⏭️  App2 tests skipped (no changes)"
           else
             echo "❌ App2 tests failed"
+            exit 1
+          fi
+
+          if [ "${{ needs.test-zhongkao.result }}" == "success" ]; then
+            echo "✅ Zhongkao tests passed"
+          elif [ "${{ needs.test-zhongkao.result }}" == "skipped" ]; then
+            echo "⏭️  Zhongkao tests skipped (no changes)"
+          else
+            echo "❌ Zhongkao tests failed"
             exit 1
           fi
