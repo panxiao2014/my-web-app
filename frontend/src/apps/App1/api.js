@@ -1,8 +1,6 @@
-const API_BASE_URL = 'http://localhost:8000';
-
 export async function sendPing() {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/app1/ping`, {
+    const response = await fetch(`/api/app1/ping`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
