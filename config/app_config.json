@@ -1,0 +1,36 @@
+{
+    "common": {
+      "validation": {
+        "name": {
+          "leadingSpace": "Name should not begin with empty spaces",
+          "trailingSpace": "Name should not end with empty spaces",
+          "tooShort": "Name must be at least 2 characters long",
+          "tooLong": "Name must not exceed 50 characters",
+          "containsNumbers": "Name should not contain numbers",
+          "invalidCharacters": "Name should only contain letters, spaces, hyphens, and apostrophes",
+          "multipleSpaces": "Name should not contain multiple consecutive spaces",
+          "startsWithSpecial": "Name should not start with a hyphen or apostrophe",
+          "endsWithSpecial": "Name should not end with a hyphen or apostrophe"
+        }
+      },
+
+      "navigation": {
+        "nextButton": "Next",
+        "previousButton": "Previous",
+        "pageIndicator": "Page {current} of {total}"
+      }
+    },
+
+    "zhongkao": {
+      "title": "成都市中考模拟志愿填报",
+      "pages": {
+        "page1": {
+          "title": "请输入您的姓名:"
+        },
+        "page2": {
+          "title": "性别:",
+          "options": ["女", "男"]
+        }
+      }
+    }
+  }

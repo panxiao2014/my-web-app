@@ -15,7 +15,7 @@ class TestApp1:
         page.goto("http://localhost:5173")
         
         # Click on App1 navigation button
-        page.click("text=App1")
+        page.click("[data-testid='nav-app1']")
         
         # Wait for App1 to load
         expect(page.locator("h1")).to_have_text("App1")

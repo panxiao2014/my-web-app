@@ -1,21 +1,13 @@
 import { useState, useEffect } from 'react'
+import { validName } from '../../utils/utils'
 
-function TextInput({ title, value, onChange, onValidationChange }) {
+function NameInput({ title, value, onChange, onValidationChange }) {
   const [error, setError] = useState('')
 
   const validateInput = (inputValue) => {
-    // Check if input begins with empty spaces
-    if (inputValue.length > 0 && inputValue[0] === ' ') {
-      setError('Name should not begin with empty spaces')
-      return false
-    }
-    // Check if input is not empty
-    if (inputValue.trim() === '') {
-      setError('')
-      return false
-    }
-    setError('')
-    return true
+    const { isValid, errorMessage } = validName(inputValue)
+    setError(errorMessage)
+    return isValid
   }
 
   const handleChange = (e) => {
@@ -40,6 +32,7 @@ function TextInput({ title, value, onChange, onValidationChange }) {
       <label className="zhongkao-input-label">{title}</label>
       <input
         type="text"
+        data-testid="name-input-field"
         className={`zhongkao-input-field ${error ? 'error' : ''}`}
         value={value}
         onChange={handleChange}
@@ -49,4 +42,4 @@ function TextInput({ title, value, onChange, onValidationChange }) {
   )
 }
 
-export default TextInput
+export default NameInput

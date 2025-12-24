@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Page1 from './Page1'
 import Page2 from './Page2'
+import { ZHONGKAO_CONFIG, COMMON_CONFIG, formatPageIndicator } from '../../config/appConfig'
 import '../../styles/Zhongkao.css'
 
 function Zhongkao() {
@@ -48,11 +49,8 @@ function Zhongkao() {
   }
 
   return (
-    <div className="zhongkao-container">
-      <h1>User Registration</h1>
-      <div className="zhongkao-page-indicator">
-        Page {currentPage} of {totalPages}
-      </div>
+    <div className="zhongkao-container" data-testid="zhongkao-container">
+      <h1>{ZHONGKAO_CONFIG.title}</h1>
       
       <div className="zhongkao-content">
         {renderPage()}
@@ -64,15 +62,19 @@ function Zhongkao() {
           onClick={handlePrevious}
           disabled={currentPage === 1}
         >
-          Previous
+          {COMMON_CONFIG.navigation.previousButton}
         </button>
         <button 
           className="zhongkao-button zhongkao-button-next"
           onClick={handleNext}
           disabled={currentPage === totalPages || !isCurrentPageValid}
         >
-          Next
+          {COMMON_CONFIG.navigation.nextButton}
         </button>
+      </div>
+
+      <div className="zhongkao-page-indicator">
+        {formatPageIndicator(currentPage, totalPages)}
       </div>
     </div>
   )
