@@ -1,7 +1,7 @@
 export async function sendPing() {
   try {
     const response = await fetch("/api/app1/ping", {
-      method: 'POST',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
