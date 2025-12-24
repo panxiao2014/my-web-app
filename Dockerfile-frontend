@@ -1,6 +1,7 @@
 FROM node:24 AS build
 WORKDIR /app
 COPY frontend/package*.json ./frontend/
+COPY config ./config
 WORKDIR /app/frontend
 RUN npm ci
 COPY frontend/ .
