@@ -2,21 +2,21 @@
     "common": {
       "validation": {
         "name": {
-          "leadingSpace": "Name should not begin with empty spaces",
-          "trailingSpace": "Name should not end with empty spaces",
-          "tooShort": "Name must be at least 2 characters long",
-          "tooLong": "Name must not exceed 50 characters",
-          "containsNumbers": "Name should not contain numbers",
-          "invalidCharacters": "Name should only contain letters, spaces, hyphens, and apostrophes",
-          "multipleSpaces": "Name should not contain multiple consecutive spaces",
-          "startsWithSpecial": "Name should not start with a hyphen or apostrophe",
-          "endsWithSpecial": "Name should not end with a hyphen or apostrophe"
+          "leadingSpace": "名字不能以空格开头",
+          "trailingSpace": "名字不能以空格结尾",
+          "tooShort": "名字需要至少两个字符",
+          "tooLong": "名字长度过长",
+          "containsNumbers": "名字不能包含数字",
+          "invalidCharacters": "名字包含无效字符",
+          "multipleSpaces": "名字不能包含空格",
+          "startsWithSpecial": "名字包含无效字符",
+          "endsWithSpecial": "名字包含无效字符"
         }
       },
 
       "navigation": {
-        "nextButton": "Next",
-        "previousButton": "Previous",
+        "nextButton": "下一步",
+        "previousButton": "上一步",
         "pageIndicator": "Page {current} of {total}"
       }
     },

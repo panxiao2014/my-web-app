@@ -5,11 +5,17 @@ import { ZHONGKAO_CONFIG } from '../../config/appConfig'
 function Page2({ userInfo, updateUserInfo, updateValidation }) {
   const genderOptions = [ZHONGKAO_CONFIG.pages.page2.options[0], ZHONGKAO_CONFIG.pages.page2.options[1]]
 
-  // Validate on mount and when gender changes
+  // Validate on mount
   useEffect(() => {
     const isValid = userInfo.gender !== ''
     updateValidation(isValid)
-  }, [userInfo.gender, updateValidation])
+  }, [])
+
+  const handleChange = (value) => {
+    updateUserInfo('gender', value)
+    // Validate immediately after updating
+    updateValidation(value !== '')
+  }
 
   return (
     <div className="zhongkao-page">
@@ -17,7 +23,7 @@ function Page2({ userInfo, updateUserInfo, updateValidation }) {
         title={ZHONGKAO_CONFIG.pages.page2.title}
         value={userInfo.gender}
         options={genderOptions}
-        onChange={(value) => updateUserInfo('gender', value)}
+        onChange={handleChange}
       />
     </div>
   )

@@ -1,3 +1,5 @@
+import { COMMON_CONFIG } from '../config/appConfig'
+
 /**
  * Validates a name input
  * @param {string} name - The name string to validate
@@ -16,7 +18,7 @@ export function validName(name) {
     if (name[0] === ' ') {
       return {
         isValid: false,
-        errorMessage: 'Name should not begin with empty spaces'
+        errorMessage: COMMON_CONFIG.validation.name["leadingSpace"]
       };
     }
   
@@ -24,15 +26,7 @@ export function validName(name) {
     if (name[name.length - 1] === ' ') {
       return {
         isValid: false,
-        errorMessage: 'Name should not end with empty spaces'
-      };
-    }
-  
-    // Check if name contains only spaces
-    if (name.trim().length === 0) {
-      return {
-        isValid: false,
-        errorMessage: 'Name cannot contain only spaces'
+        errorMessage: COMMON_CONFIG.validation.name["trailingSpace"]
       };
     }
   
@@ -40,7 +34,7 @@ export function validName(name) {
     if (name.trim().length < 2) {
       return {
         isValid: false,
-        errorMessage: 'Name must be at least 2 characters long'
+        errorMessage:  COMMON_CONFIG.validation.name["tooShort"]
       };
     }
   
@@ -48,7 +42,7 @@ export function validName(name) {
     if (name.length > 50) {
       return {
         isValid: false,
-        errorMessage: 'Name must not exceed 50 characters'
+        errorMessage: COMMON_CONFIG.validation.name["tooLong"]
       };
     }
   
@@ -56,7 +50,7 @@ export function validName(name) {
     if (/\d/.test(name)) {
       return {
         isValid: false,
-        errorMessage: 'Name should not contain numbers'
+        errorMessage: COMMON_CONFIG.validation.name["containsNumbers"]
       };
     }
   
@@ -66,15 +60,15 @@ export function validName(name) {
     if (!/^[\p{L}\p{M}\s\-']+$/u.test(name)) {
       return {
         isValid: false,
-        errorMessage: 'Name should only contain letters, spaces, hyphens, and apostrophes'
+        errorMessage: COMMON_CONFIG.validation.name["invalidCharacters"]
       };
     }
   
     // Check if name contains multiple consecutive spaces
-    if (/\s{2,}/.test(name)) {
+    if (/\s{1,}/.test(name)) {
       return {
         isValid: false,
-        errorMessage: 'Name should not contain multiple consecutive spaces'
+        errorMessage: COMMON_CONFIG.validation.name["multipleSpaces"]
       };
     }
   
@@ -82,7 +76,7 @@ export function validName(name) {
     if (/^[-']/.test(name)) {
       return {
         isValid: false,
-        errorMessage: 'Name should not start with a hyphen or apostrophe'
+        errorMessage: COMMON_CONFIG.validation.name["startsWithSpecial"]
       };
     }
   
@@ -90,7 +84,7 @@ export function validName(name) {
     if (/[-']$/.test(name)) {
       return {
         isValid: false,
-        errorMessage: 'Name should not end with a hyphen or apostrophe'
+        errorMessage: COMMON_CONFIG.validation.name["endsWithSpecial"]
       };
     }
   

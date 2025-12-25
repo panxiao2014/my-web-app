@@ -10,6 +10,8 @@ function Zhongkao() {
     name: '',
     gender: ''
   })
+
+  // When user enters valid input, page will enable Next button:
   const [isCurrentPageValid, setIsCurrentPageValid] = useState(false)
 
   const totalPages = 2
