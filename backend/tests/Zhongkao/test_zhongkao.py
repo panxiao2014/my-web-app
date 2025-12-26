@@ -95,7 +95,7 @@ class TestZhongkao:
         next_button.click()
         
         # Verify we're on page 2
-        page_indicator_text = format_page_indicator(2, 2)
+        page_indicator_text = format_page_indicator(2, 3)
         expect(page.locator(".zhongkao-page-indicator")).to_contain_text(page_indicator_text)
         
         # Verify Previous button is enabled
@@ -111,7 +111,7 @@ class TestZhongkao:
         previous_button.click()
         
         # Verify we're back on page 1
-        page_indicator_text = format_page_indicator(1, 2)
+        page_indicator_text = format_page_indicator(1, 3)
         expect(page.locator(".zhongkao-page-indicator")).to_contain_text(page_indicator_text)
         
         # Verify name is still there
