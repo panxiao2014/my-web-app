@@ -1,20 +1,22 @@
 import { useState } from 'react'
 import Page1 from './Page1'
 import Page2 from './Page2'
+import ScorePage from './ScorePage'
 import { ZHONGKAO_CONFIG, COMMON_CONFIG, formatPageIndicator } from '../../config/appConfig'
 import '../../styles/Zhongkao.css'
 
 function Zhongkao() {
   const [currentPage, setCurrentPage] = useState(1)
+  const scoresCount = ZHONGKAO_CONFIG.pages.scorepage.scores.length
+  
   const [userInfo, setUserInfo] = useState({
     name: '',
-    gender: ''
+    gender: '',
+    scores: Array(scoresCount).fill('')
   })
-
-  // When user enters valid input, page will enable Next button:
   const [isCurrentPageValid, setIsCurrentPageValid] = useState(false)
 
-  const totalPages = 2
+  const totalPages = 3
 
   const handleNext = () => {
     if (currentPage < totalPages && isCurrentPageValid) {
@@ -45,6 +47,8 @@ function Zhongkao() {
         return <Page1 userInfo={userInfo} updateUserInfo={updateUserInfo} updateValidation={updateValidation} />
       case 2:
         return <Page2 userInfo={userInfo} updateUserInfo={updateUserInfo} updateValidation={updateValidation} />
+      case 3:
+        return <ScorePage userInfo={userInfo} updateUserInfo={updateUserInfo} updateValidation={updateValidation} />
       default:
         return <Page1 userInfo={userInfo} updateUserInfo={updateUserInfo} updateValidation={updateValidation} />
     }
@@ -52,9 +56,10 @@ function Zhongkao() {
 
   return (
     <div className="zhongkao-container" data-testid="zhongkao-container">
-      <h1 data-testid="zhongkao-title">
-        {ZHONGKAO_CONFIG.title}
-      </h1>
+      <h1 data-testid="zhongkao-title">{ZHONGKAO_CONFIG.title}</h1>
+      <div className="zhongkao-page-indicator" data-testid="zhongkao-page-indicator">
+        {formatPageIndicator(currentPage, totalPages)}
+      </div>
       
       <div className="zhongkao-content">
         {renderPage()}
@@ -62,25 +67,21 @@ function Zhongkao() {
 
       <div className="zhongkao-navigation">
         <button 
-          className="zhongkao-button zhongkao-button-previous"
           data-testid="zhongkao-previous-button"
+          className="zhongkao-button zhongkao-button-previous"
           onClick={handlePrevious}
           disabled={currentPage === 1}
         >
           {COMMON_CONFIG.navigation.previousButton}
         </button>
         <button 
-          className="zhongkao-button zhongkao-button-next"
           data-testid="zhongkao-next-button"
+          className="zhongkao-button zhongkao-button-next"
           onClick={handleNext}
           disabled={currentPage === totalPages || !isCurrentPageValid}
         >
           {COMMON_CONFIG.navigation.nextButton}
         </button>
-      </div>
-
-      <div className="zhongkao-page-indicator">
-        {formatPageIndicator(currentPage, totalPages)}
       </div>
     </div>
   )

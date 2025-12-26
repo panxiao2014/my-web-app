@@ -11,6 +11,9 @@
           "multipleSpaces": "名字不能包含空格",
           "startsWithSpecial": "名字包含无效字符",
           "endsWithSpecial": "名字包含无效字符"
+        },
+        "score": {
+          "outOfRange": "分数必须在 {min} 到 {max} 之间"
         }
       },
 
@@ -30,6 +33,52 @@
         "page2": {
           "title": "性别:",
           "options": ["女", "男"]
+        },
+        "scorepage":{
+          "title": "请输入您的成绩:",
+          "scores": [
+            {
+              "title": "语文:",
+              "range": [0, 150]
+            },
+            {
+              "title": "数学:",
+              "range": [0, 150]
+            },
+            {
+              "title": "英语:",
+              "range": [0, 150]
+            },
+            {
+              "title": "物理:",
+              "range": [0, 70]
+            },
+            {
+              "title": "化学:",
+              "range": [0, 50]
+            },
+            {
+              "title": "体育:",
+              "range": [0, 60]
+            },
+            {
+              "title": "道法:",
+              "range": [8, 12, 16, 20]
+            },
+            {
+              "title": "历史:",
+              "range": [8, 12, 16, 20]
+            },
+            {
+              "title": "生物:",
+              "range": [8, 12, 16, 20]
+            },
+            {
+              "title": "地理:",
+              "range": [8, 12, 16, 20]
+            }
+          ],
+          "totalScore": "总分:"
         }
       }
     }
