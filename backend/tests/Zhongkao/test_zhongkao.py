@@ -14,45 +14,29 @@ class TestZhongkao:
     Test cases for Zhongkao
     """
     
-    def test_name_validation_with_leading_space(self, page: Page):
+    @pytest.mark.parametrize("input_value,should_be_valid,error_key", [
+        # Invalid cases
+        (" John", False, "leadingSpace"),
+        ("John ", False, "trailingSpace"),
+        ("J", False, "tooShort"),
+        ("a" * 51, False, "tooLong"),
+        ("John123", False, "containsNumbers"),
+        ("John@Doe", False, "invalidCharacters"),
+        ("John  Doe", False, "multipleSpaces"),
+        ("-John", False, "startsWithSpecial"),
+        ("John'", False, "endsWithSpecial"),
+        
+        # Valid cases
+        ("John", True, None),
+        ("Mary Jane", True, None),
+        ("O'Brien", True, None),
+        ("Jean-Luc", True, None),
+        ("李明", True, None),
+        ("José García", True, None),
+    ])
+    def test_name_validation_with_various_inputs(self, page: Page, input_value: str, should_be_valid: bool, error_key: str):
         """
-        Test that inputting a name with leading space shows warning
-        and disables the Next button
-        """
-        # Navigate to the application
-        page.goto("http://localhost:5173")
-        
-        # Click on Zhongkao navigation button
-        page.click("[data-testid='nav-zhongkao']")
-        
-        # Wait for Zhongkao to load
-        expect(page.locator("h1")).to_have_text(ZHONGKAO_CONFIG['title'])
-        
-        # Verify we're on page 1
-        page_indicator_text = format_page_indicator(1, 2)
-        expect(page.locator(".zhongkao-page-indicator")).to_contain_text(page_indicator_text)
-        
-        # Verify Next button is initially disabled (no input yet)
-        next_button_text = COMMON_CONFIG['navigation']['nextButton']
-        next_button = page.locator(f"button:has-text('{next_button_text}')")
-        expect(next_button).to_be_disabled()
-        
-        # Input a name with leading space
-        name_input = page.locator(".zhongkao-input-field")
-        name_input.fill(" John")
-        
-        # Verify error message appears
-        error_message = page.locator(".zhongkao-error-message")
-        expect(error_message).to_be_visible()
-        expected_error = COMMON_CONFIG['validation']['name']['leadingSpace']
-        expect(error_message).to_have_text(expected_error)
-        
-        # Verify Next button is still disabled
-        expect(next_button).to_be_disabled()
-        
-    def test_name_validation_with_valid_input(self, page: Page):
-        """
-        Test that inputting a valid name enables the Next button
+        Test that various valid and invalid name inputs show correct validation behavior
         """
         # Navigate to the application
         page.goto("http://localhost:5173")
@@ -61,20 +45,32 @@ class TestZhongkao:
         page.click("[data-testid='nav-zhongkao']")
         
         # Wait for Zhongkao to load
-        expect(page.locator("h1")).to_have_text(ZHONGKAO_CONFIG['title'])
+        title = page.locator("[data-testid='zhongkao-title']")
+        expect(title).to_have_text(ZHONGKAO_CONFIG['title'])
         
-        # Input a valid name
-        name_input = page.locator(".zhongkao-input-field")
-        name_input.fill("John")
+        name_input = page.locator("[data-testid='name-input-field']")
+        error_message = page.locator("[data-testid='name-input-error']")
+        next_button = page.locator("[data-testid='zhongkao-next-button']")
         
-        # Verify no error message appears
-        error_message = page.locator(".zhongkao-error-message")
-        expect(error_message).not_to_be_visible()
+        # Clear and input the test value
+        name_input.clear()
+        name_input.fill(input_value)
         
-        # Verify Next button is enabled
-        next_button_text = COMMON_CONFIG['navigation']['nextButton']
-        next_button = page.locator(f"button:has-text('{next_button_text}')")
-        expect(next_button).to_be_enabled()
+        # Small wait for validation to process
+        page.wait_for_timeout(100)
+        
+        if should_be_valid:
+            # For valid input: no error message, Next button enabled
+            expect(error_message).not_to_be_visible()
+            expect(next_button).to_be_enabled()
+        else:
+            # For invalid input: error message shown, Next button disabled
+            expect(error_message).to_be_visible()
+            expected_error = COMMON_CONFIG['validation']['name'][error_key]
+            expect(error_message).to_have_text(expected_error)
+            expect(next_button).to_be_disabled()
+        
+
         
     def test_navigation_between_pages(self, page: Page):
         """

@@ -37,7 +37,7 @@ function NameInput({ title, value, onChange, onValidationChange }) {
         value={value}
         onChange={handleChange}
       />
-      {error && <div className="zhongkao-error-message">{error}</div>}
+      {error && <div className="zhongkao-error-message" data-testid="name-input-error">{error}</div>}
     </div>
   )
 }

@@ -52,7 +52,9 @@ function Zhongkao() {
 
   return (
     <div className="zhongkao-container" data-testid="zhongkao-container">
-      <h1>{ZHONGKAO_CONFIG.title}</h1>
+      <h1 data-testid="zhongkao-title">
+        {ZHONGKAO_CONFIG.title}
+      </h1>
       
       <div className="zhongkao-content">
         {renderPage()}
@@ -61,6 +63,7 @@ function Zhongkao() {
       <div className="zhongkao-navigation">
         <button 
           className="zhongkao-button zhongkao-button-previous"
+          data-testid="zhongkao-previous-button"
           onClick={handlePrevious}
           disabled={currentPage === 1}
         >
@@ -68,6 +71,7 @@ function Zhongkao() {
         </button>
         <button 
           className="zhongkao-button zhongkao-button-next"
+          data-testid="zhongkao-next-button"
           onClick={handleNext}
           disabled={currentPage === totalPages || !isCurrentPageValid}
         >

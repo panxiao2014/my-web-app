@@ -65,7 +65,7 @@ export function validName(name) {
     }
   
     // Check if name contains multiple consecutive spaces
-    if (/\s{1,}/.test(name)) {
+    if (/\s{2,}/.test(name)) {
       return {
         isValid: false,
         errorMessage: COMMON_CONFIG.validation.name["multipleSpaces"]
