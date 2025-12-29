@@ -26,6 +26,7 @@
 
     "zhongkao": {
       "title": "成都市中考模拟志愿填报",
+      "totalPages": 4,
       "pages": {
         "page1": {
           "title": "请输入您的姓名:"

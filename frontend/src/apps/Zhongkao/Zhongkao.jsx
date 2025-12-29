@@ -9,6 +9,7 @@ import '../../styles/Zhongkao.css'
 function Zhongkao() {
   const [currentPage, setCurrentPage] = useState(1)
   const scoresCount = ZHONGKAO_CONFIG.pages.scorepage.scores.length
+  const totalPages = ZHONGKAO_CONFIG.totalPages
   
   const [userInfo, setUserInfo] = useState({
     name: '',
@@ -16,8 +17,6 @@ function Zhongkao() {
     scores: Array(scoresCount).fill('')
   })
   const [isCurrentPageValid, setIsCurrentPageValid] = useState(false)
-
-  const totalPages = 4
 
   const handleNext = () => {
     if (currentPage < totalPages && isCurrentPageValid) {
