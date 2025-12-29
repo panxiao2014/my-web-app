@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Page1 from './Page1'
 import Page2 from './Page2'
 import ScorePage from './ScorePage'
+import SummaryPage from './SummaryPage'
 import { ZHONGKAO_CONFIG, COMMON_CONFIG, formatPageIndicator } from '../../config/appConfig'
 import '../../styles/Zhongkao.css'
 
@@ -16,7 +17,7 @@ function Zhongkao() {
   })
   const [isCurrentPageValid, setIsCurrentPageValid] = useState(false)
 
-  const totalPages = 3
+  const totalPages = 4
 
   const handleNext = () => {
     if (currentPage < totalPages && isCurrentPageValid) {
@@ -49,6 +50,8 @@ function Zhongkao() {
         return <Page2 userInfo={userInfo} updateUserInfo={updateUserInfo} updateValidation={updateValidation} />
       case 3:
         return <ScorePage userInfo={userInfo} updateUserInfo={updateUserInfo} updateValidation={updateValidation} />
+      case 4:
+        return <SummaryPage userInfo={userInfo} updateValidation={updateValidation} />
       default:
         return <Page1 userInfo={userInfo} updateUserInfo={updateUserInfo} updateValidation={updateValidation} />
     }

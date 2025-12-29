@@ -10,11 +10,20 @@ function ScoreBoard({ scores, updateScores, updateValidation }) {
   // Initialize validation state for all courses
   useEffect(() => {
     const initialState = {}
-    scoreConfigs.forEach((_, index) => {
-      initialState[index] = false
+    scoreConfigs.forEach((config, index) => {
+      const score = scores[index]
+      // Validate based on existing score values
+      if (config.range.length === 2) {
+        const isValid = score !== '' && !isNaN(Number(score)) && 
+                       Number(score) >= config.range[0] && 
+                       Number(score) <= config.range[1]
+        initialState[index] = isValid
+      } else {
+        initialState[index] = score !== ''
+      }
     })
     setValidationState(initialState)
-  }, [])
+  }, [scores])  // Re-run when scores change
 
   // Check if all courses are valid
   useEffect(() => {

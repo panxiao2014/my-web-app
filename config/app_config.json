@@ -79,6 +79,13 @@
             }
           ],
           "totalScore": "总分:"
+        },
+        "summarypage": {
+          "title": "信息确认",
+          "nameLabel": "姓名:",
+          "genderLabel": "性别:",
+          "scoresLabel": "各科成绩:",
+          "totalScoreLabel": "总分:"
         }
       }
     }
