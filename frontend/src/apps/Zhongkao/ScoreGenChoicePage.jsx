@@ -13,6 +13,11 @@ function ScoreGenChoicePage({ userInfo, updateUserInfo, updateValidation }) {
     updateValidation(isValid)
   }, [userInfo.scoreGenMethod, updateValidation])
 
+  // Validate on mount
+  useEffect(() => {
+    updateUserInfo('scoreGenMethod', '')
+  }, [])
+
   const handleMethodChange = async (value) => {
     updateUserInfo('scoreGenMethod', value)
     
@@ -28,6 +33,10 @@ function ScoreGenChoicePage({ userInfo, updateUserInfo, updateValidation }) {
       } finally {
         setIsGenerating(false)
       }
+    }else {
+        // If user selects manual entry, clear scores
+        const totalCourses = ZHONGKAO_CONFIG.pages.scorepage.scores.length
+        updateUserInfo('scores', Array(totalCourses).fill(''))
     }
   }
 

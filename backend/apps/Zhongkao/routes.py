@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from apps.Zhongkao.logic import handle_genScore
 
 router = APIRouter(prefix="/api/zhongkao", tags=["Zhongkao"])
 
@@ -9,9 +10,4 @@ async def generate_scores():
     Generate random scores for all courses
     TODO: Implement actual score generation logic
     """
-    # Fake response for now - returns fixed scores
-    fake_scores = [100, 95, 88, 60, 45, 50, 16, 12, 16, 12]
-    
-    return {
-        "scores": fake_scores
-    }
+    return await handle_genScore()
