@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Page1 from './Page1'
 import Page2 from './Page2'
+import ScoreGenChoicePage from './ScoreGenChoicePage'
 import ScorePage from './ScorePage'
 import SummaryPage from './SummaryPage'
 import { ZHONGKAO_CONFIG, COMMON_CONFIG, formatPageIndicator } from '../../config/appConfig'
@@ -14,19 +15,31 @@ function Zhongkao() {
   const [userInfo, setUserInfo] = useState({
     name: '',
     gender: '',
+    scoreGenMethod: '',
     scores: Array(scoresCount).fill('')
   })
   const [isCurrentPageValid, setIsCurrentPageValid] = useState(false)
 
+
   const handleNext = () => {
     if (currentPage < totalPages && isCurrentPageValid) {
-      setCurrentPage(currentPage + 1)
+      // If on ScoreGenChoicePage and user selected random generation, skip ScorePage
+      if (currentPage === 3 && userInfo.scoreGenMethod === ZHONGKAO_CONFIG.pages.scoregenchoicepage.options[1]) {
+        setCurrentPage(currentPage + 2)  // Skip to SummaryPage
+      } else {
+        setCurrentPage(currentPage + 1)
+      }
     }
   }
 
   const handlePrevious = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
+      // If on SummaryPage and came from random generation, skip back to ScoreGenChoicePage
+      if (currentPage === totalPages && userInfo.scoreGenMethod === ZHONGKAO_CONFIG.pages.scoregenchoicepage.options[1]) {
+        setCurrentPage(currentPage - 2)  // Skip back to ScoreGenChoicePage
+      } else {
+        setCurrentPage(currentPage - 1)
+      }
     }
   }
 
@@ -48,8 +61,10 @@ function Zhongkao() {
       case 2:
         return <Page2 userInfo={userInfo} updateUserInfo={updateUserInfo} updateValidation={updateValidation} />
       case 3:
-        return <ScorePage userInfo={userInfo} updateUserInfo={updateUserInfo} updateValidation={updateValidation} />
+        return <ScoreGenChoicePage userInfo={userInfo} updateUserInfo={updateUserInfo} updateValidation={updateValidation} />
       case 4:
+        return <ScorePage userInfo={userInfo} updateUserInfo={updateUserInfo} updateValidation={updateValidation} />
+      case 5:
         return <SummaryPage userInfo={userInfo} updateValidation={updateValidation} />
       default:
         return <Page1 userInfo={userInfo} updateUserInfo={updateUserInfo} updateValidation={updateValidation} />

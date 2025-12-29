@@ -26,7 +26,7 @@
 
     "zhongkao": {
       "title": "成都市中考模拟志愿填报",
-      "totalPages": 4,
+      "totalPages": 5,
       "pages": {
         "page1": {
           "title": "请输入您的姓名:"
@@ -34,6 +34,10 @@
         "page2": {
           "title": "性别:",
           "options": ["女", "男"]
+        },
+        "scoregenchoicepage": {
+          "title": "请选择成绩录入方式:",
+          "options": ["手动录入各科成绩", "随机生成各科成绩"]
         },
         "scorepage":{
           "title": "请输入您的成绩:",
