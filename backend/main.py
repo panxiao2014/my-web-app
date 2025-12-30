@@ -1,10 +1,21 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
 from apps.App1.routes import router as app1_router
 from apps.App2.routes import router as app2_router
 from apps.Zhongkao.routes import router as zhongkao_router
+from apps.Zhongkao.zhongkao import init_zhongkao
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # 🔹 Startup
+    await init_zhongkao(app)
+    yield
+    # 🔹 Shutdown (optional)
+    print("Shutting down zhongkao...")
+
+
+app = FastAPI(lifespan=lifespan)
 
 # Configure CORS to allow frontend to communicate with backend
 app.add_middleware(
