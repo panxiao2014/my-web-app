@@ -21,10 +21,12 @@ function Summary({ userInfo }) {
         <InfoBox 
           title={summaryConfig.nameLabel} 
           value={userInfo.name} 
+          data-testid="summary-name"
         />
         <InfoBox 
           title={summaryConfig.genderLabel} 
-          value={userInfo.gender} 
+          value={userInfo.gender}
+          data-testid="summary-gender"
         />
       </div>
 
@@ -32,11 +34,12 @@ function Summary({ userInfo }) {
         <h3>{summaryConfig.scoresLabel}</h3>
         <div className="zhongkao-summary-scores">
           {scoreConfigs.map((config, index) => (
-            <InfoBox
-              key={index}
-              title={config.title}
-              value={userInfo.scores[index]}
-            />
+            <div key={index} data-testid={`summary-score-${index}`}>
+              <InfoBox
+                title={config.title}
+                value={userInfo.scores[index]}
+              />
+            </div>
           ))}
         </div>
       </div>
