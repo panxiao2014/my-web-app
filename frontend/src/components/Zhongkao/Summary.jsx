@@ -1,4 +1,5 @@
 import { ZHONGKAO_CONFIG } from '../../config/appConfig'
+import InfoBox from './InfoBox'
 
 function Summary({ userInfo }) {
   const summaryConfig = ZHONGKAO_CONFIG.pages.summarypage
@@ -17,27 +18,25 @@ function Summary({ userInfo }) {
       <h2>{summaryConfig.title}</h2>
 
       <div className="zhongkao-summary-section">
-        <div className="zhongkao-summary-item">
-          <span className="zhongkao-summary-label">{summaryConfig.nameLabel}</span>
-          <span className="zhongkao-summary-value" data-testid="summary-name">{userInfo.name}</span>
-        </div>
-
-        <div className="zhongkao-summary-item">
-          <span className="zhongkao-summary-label">{summaryConfig.genderLabel}</span>
-          <span className="zhongkao-summary-value" data-testid="summary-gender">{userInfo.gender}</span>
-        </div>
+        <InfoBox 
+          title={summaryConfig.nameLabel} 
+          value={userInfo.name} 
+        />
+        <InfoBox 
+          title={summaryConfig.genderLabel} 
+          value={userInfo.gender} 
+        />
       </div>
 
       <div className="zhongkao-summary-section">
         <h3>{summaryConfig.scoresLabel}</h3>
         <div className="zhongkao-summary-scores">
           {scoreConfigs.map((config, index) => (
-            <div key={index} className="zhongkao-summary-score-item">
-              <span className="zhongkao-summary-label">{config.title}</span>
-              <span className="zhongkao-summary-value" data-testid={`summary-score-${index}`}>
-                {userInfo.scores[index]}
-              </span>
-            </div>
+            <InfoBox
+              key={index}
+              title={config.title}
+              value={userInfo.scores[index]}
+            />
           ))}
         </div>
       </div>

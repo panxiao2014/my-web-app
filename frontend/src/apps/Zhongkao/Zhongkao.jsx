@@ -8,24 +8,23 @@ import { ZHONGKAO_CONFIG, COMMON_CONFIG, formatPageIndicator } from '../../confi
 import '../../styles/Zhongkao.css'
 
 function Zhongkao() {
-  const [currentPage, setCurrentPage] = useState(1)
   const scoresCount = ZHONGKAO_CONFIG.pages.scorepage.scores.length
   const totalPages = ZHONGKAO_CONFIG.totalPages
-  
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const [isCurrentPageValid, setIsCurrentPageValid] = useState(false)
   const [userInfo, setUserInfo] = useState({
     name: '',
     gender: '',
     scoreGenMethod: '',
     scores: Array(scoresCount).fill('')
   })
-  const [isCurrentPageValid, setIsCurrentPageValid] = useState(false)
-
 
   const handleNext = () => {
     if (currentPage < totalPages && isCurrentPageValid) {
       // If on ScoreGenChoicePage and user selected random generation, skip ScorePage
       if (currentPage === 3 && userInfo.scoreGenMethod === ZHONGKAO_CONFIG.pages.scoregenchoicepage.options[1]) {
-        setCurrentPage(currentPage + 2)  // Skip to SummaryPage
+        setCurrentPage(currentPage + 2)  // Skip manual score input and jump to SummaryPage
       } else {
         setCurrentPage(currentPage + 1)
       }
@@ -35,7 +34,7 @@ function Zhongkao() {
   const handlePrevious = () => {
     if (currentPage > 1) {
       // If on SummaryPage and came from random generation, skip back to ScoreGenChoicePage
-      if (currentPage === totalPages && userInfo.scoreGenMethod === ZHONGKAO_CONFIG.pages.scoregenchoicepage.options[1]) {
+      if (currentPage === 5 && userInfo.scoreGenMethod === ZHONGKAO_CONFIG.pages.scoregenchoicepage.options[1]) {
         setCurrentPage(currentPage - 2)  // Skip back to ScoreGenChoicePage
       } else {
         setCurrentPage(currentPage - 1)
