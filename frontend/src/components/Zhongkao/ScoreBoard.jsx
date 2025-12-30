@@ -7,7 +7,7 @@ function ScoreBoard({ scores, updateScores, updateValidation }) {
   const scoreConfigs = ZHONGKAO_CONFIG.pages.scorepage.scores
   const [validationState, setValidationState] = useState({})
 
-  // Initialize validation state for all courses
+  // Initialize validation state and check if all courses are valid
   useEffect(() => {
     const initialState = {}
     scoreConfigs.forEach((config, index) => {
@@ -23,13 +23,11 @@ function ScoreBoard({ scores, updateScores, updateValidation }) {
       }
     })
     setValidationState(initialState)
-  }, [scores])  // Re-run when scores change
-
-  // Check if all courses are valid
-  useEffect(() => {
-    const allValid = Object.values(validationState).every(isValid => isValid === true)
+    
+    // Check if all courses are valid
+    const allValid = Object.values(initialState).every(isValid => isValid === true)
     updateValidation(allValid)
-  }, [validationState, updateValidation])
+  }, [scores, updateValidation])
 
   // Calculate total score
   const calculateTotal = () => {
@@ -44,10 +42,18 @@ function ScoreBoard({ scores, updateScores, updateValidation }) {
   }
 
   const handleValidationChange = (index, isValid) => {
-    setValidationState(prev => ({
-      ...prev,
-      [index]: isValid
-    }))
+    setValidationState(prev => {
+      const newState = {
+        ...prev,
+        [index]: isValid
+      }
+      
+      // Check if all courses are valid with the new state
+      const allValid = Object.values(newState).every(isValid => isValid === true)
+      updateValidation(allValid)
+      
+      return newState
+    })
   }
 
   return (
