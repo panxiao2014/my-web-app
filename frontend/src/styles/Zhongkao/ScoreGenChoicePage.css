@@ -1,0 +1,10 @@
+/* ScoreGenChoicePage Component */
+.zhongkao-generating-message {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #3498db;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 16px;
+  }

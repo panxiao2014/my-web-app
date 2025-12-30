@@ -1,0 +1,60 @@
+/* Summary Component */
+.zhongkao-summary {
+    width: 100%;
+  }
+  
+  .zhongkao-summary h2 {
+    font-size: 24px;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .zhongkao-summary h3 {
+    font-size: 18px;
+    color: #2c3e50;
+    margin-bottom: 15px;
+  }
+  
+  .zhongkao-summary-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .zhongkao-summary-scores {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .zhongkao-summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #3498db;
+    color: white;
+    border-radius: 8px;
+    font-size: 20px;
+    margin-top: 20px;
+  }
+  
+  .zhongkao-summary-total .zhongkao-summary-label {
+    color: white;
+    font-weight: bold;
+  }
+  
+  .zhongkao-summary-total-value {
+    font-size: 32px;
+    font-weight: bold;
+  }
+  
+  /* Responsive layout for smaller screens */
+  @media (max-width: 768px) {
+    .zhongkao-summary-scores {
+      grid-template-columns: 1fr;
+    }
+  }

@@ -1,0 +1,21 @@
+/* Dropdown Component */
+.zhongkao-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .zhongkao-select-field {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.3s;
+  }
+  
+  .zhongkao-select-field:focus {
+    outline: none;
+    border-color: #3498db;
+  }

@@ -1,0 +1,35 @@
+/* NameInput Component */
+.zhongkao-text-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .zhongkao-input-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #2c3e50;
+  }
+  
+  .zhongkao-input-field {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+  }
+  
+  .zhongkao-input-field:focus {
+    outline: none;
+    border-color: #3498db;
+  }
+  
+  .zhongkao-input-field.error {
+    border-color: #e74c3c;
+  }
+  
+  .zhongkao-error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: -5px;
+  }

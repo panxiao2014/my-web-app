@@ -1,0 +1,32 @@
+/* InfoBox Component */
+.zhongkao-infobox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #ecf0f1;
+  }
+  
+  .zhongkao-infobox:last-child {
+    border-bottom: none;
+  }
+  
+  .zhongkao-infobox-label {
+    font-weight: 500;
+    color: #7f8c8d;
+    min-width: 100px;
+  }
+  
+  .zhongkao-infobox-value {
+    font-size: 16px;
+    color: #2c3e50;
+    font-weight: 500;
+  }
+  
+  /* InfoBox in scores grid - different styling */
+  .zhongkao-summary-scores .zhongkao-infobox {
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border-bottom: none;
+  }
