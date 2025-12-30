@@ -1,11 +1,15 @@
 import random
+from pathlib import Path
 
 class StudentName:
     def __init__(self):
         self.nameDatabase = []
         self.nameList = []
 
-        with open('apps/Zhongkao/data/names.txt', 'r', encoding='utf-16') as f:
+        base_dir = Path(__file__).resolve().parent.parent
+        data_file = base_dir / "data" / "names.txt"
+
+        with open(data_file, 'r', encoding='utf-16') as f:
             fContent = f.readlines()
             for line in fContent:
                 name,sex = line.split(',')
