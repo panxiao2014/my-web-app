@@ -39,7 +39,7 @@ if [ -n "$container_ids" ]; then
         done
 fi
 
-cd ~/my-web-app/
+cd ../..
 git pull
 
 echo "Build frontend"

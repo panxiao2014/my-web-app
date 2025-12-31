@@ -16,5 +16,5 @@ if [ -n "$container_ids" ]; then
         done
 fi
 
-cd ~/my-web-app/
+cd ../..
 docker-compose -f docker-compose-oci.yml up

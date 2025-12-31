@@ -11,6 +11,7 @@
 #满分: 710
 
 import random
+from pathlib import Path
 import pandas as pd
 import warnings
 import apps.Zhongkao.config.config as GlobalConfig
@@ -20,8 +21,11 @@ class ScoreGen:
     def __init__(self, stuNumber, dfStudents):
         self.stuNumber = stuNumber
 
+        base_dir = Path(__file__).resolve().parent.parent
+        data_file = base_dir / "data" / "2023" / "score.stats.2023.xlsx"
+
         warnings.simplefilter(action='ignore', category=UserWarning)
-        self.dfScoreStats = pd.read_excel('apps/Zhongkao/data/2023/score.stats.2023.xlsx', dtype={"学校代码": str})
+        self.dfScoreStats = pd.read_excel(data_file, dtype={"学校代码": str})
         warnings.resetwarnings()
 
         self.dfStudents = dfStudents
